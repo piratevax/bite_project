@@ -38,7 +38,7 @@ ui <- fluidPage(
       tags$hr(),
       
       # Input: Select organism ----
-      radioButtons("org", "Organism name :",
+      radioButtons("org", "Source :",
                    choices = list("BiomaRt" = 1,
                                "ClusterProfiler" = 2,
                                "Pathview" = 3 ), 
