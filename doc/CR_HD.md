@@ -30,7 +30,7 @@ imposer en-tête :
 ### Input
 
 * header : inutile
-* Sources : 
+* Sources :
 	* inutile
 	* besoin de transparence pour user
 * ajout menu déroulant espèce
@@ -51,7 +51,7 @@ imposer en-tête :
 ### GOE
 
 * liste bdd interrogée par le package (pertinence ?)
-* GO term lelvel -> G term Ontology
+* GO term lelvel -> GO term Ontology
 * EA :
 	* suppr MEA
 	* implémentation :
@@ -66,6 +66,3 @@ imposer en-tête :
 * affichage par défaut
 * Complexité supplémentaire pour les domaines ? (r. pour 18/01)
 	* une protéine peut avoir plusieurs domaines
-
-
-
