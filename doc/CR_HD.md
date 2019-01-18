@@ -23,37 +23,37 @@ imposer en-tête :
 
 ### Interface
 
-* choix espèce : menu déroulant (BioMart)
+* choix espèce : menu déroulant (BioMart) OK (Sophia, 18/01/19)
 
 ## État des lieux
 
 ### Input
 
-* header : inutile
-* Sources :
+* header : inutile OK (Sophia, 18/01/19)
+* Sources : OK (Sophia, 18/01/19)
 	* inutile
 	* besoin de transparence pour user
-* ajout menu déroulant espèce
+* ajout menu déroulant espèce OK (Sophia, 18/01/19)
 
 ## Onglets
 
-* développer les noms
-* ajout onglet domaines
+* développer les noms OK (Sophia, 18/01/19)
+* ajout onglet domaines OK (Sophia, 18/01/19)
 
 ### WDI
 
 * algo HS
-* curseur p-val/FC
-* méthode ajustement du seuil (ne pas seuiller sur p-val)
+* curseur p-val/FC OK (Sophia, 18/01/19)
+* méthode ajustement du seuil (ne pas seuiller sur p-val) OK (Sophia, 18/01/19)
 * figure interactive (pas prioritaire)
 * tableau ajusté (pas prioritaire)
 
 ### GOE
 
-* liste bdd interrogée par le package (pertinence ?)
-* GO term lelvel -> GO term Ontology
+* liste bdd interrogée par le package (pertinence ?) OK (Sophia, 18/01/19)
+* GO term lelvel -> GO term Ontology OK (Sophia, 18/01/19)
 * EA :
-	* suppr MEA
+	* suppr MEA OK (Sophia, 18/01/19)
 	* implémentation :
 		* implémentation ClusterProfiler (méthodes)
 		* SEA (fonctions, code global)
