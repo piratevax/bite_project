@@ -39,6 +39,15 @@ graph LR
     d((exportFASTA))
   end
 
+  subgraph ClusterProfiler
+    e((bitr))
+    f((groupGO))
+    g((enrichGO))
+    h((gseGO))
+    i((dropGO))
+    j((gofilter))
+  end
+
   1-->A
   2-->A
   3-->b
@@ -46,3 +55,4 @@ graph LR
   4-->b
   b-->c
   A-->c
+  c-->e
