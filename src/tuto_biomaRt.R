@@ -1,5 +1,5 @@
 library(biomaRt)
-
+listMarts()
 ensembl=useMart("ensembl")
 listDatasets(ensembl)
 ensembl = useDataset("hsapiens_gene_ensembl",mart=ensembl) #ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl")
