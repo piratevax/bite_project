@@ -51,7 +51,7 @@ imposer en-tête :
 ### GOE
 
 * liste bdd interrogée par le package (pertinence ?) OK (Sophia, 18/01/19)
-* GO term lelvel -> GO term Ontology OK (Sophia, 18/01/19)
+* GO term level -> GO term Ontology OK (Sophia, 18/01/19)
 * EA :
 	* suppr MEA OK (Sophia, 18/01/19)
 	* implémentation :
@@ -66,3 +66,22 @@ imposer en-tête :
 * affichage par défaut
 * Complexité supplémentaire pour les domaines ? (r. pour 18/01)
 	* une protéine peut avoir plusieurs domaines
+
+
+
+# RDV 18/01/19
+
+obj : Focntionnement de ClusterProfiler pour l'annotation des domaines et comment on va le coder
+
+SEA :
+* DEG
+
+GSEA/SEA : dans ClusterProfiler
+
+Domaines SEA
+* sous listes DEG
+* biomart pour récupérer les domaines
+* tableau domaines par db
+* test SEA
+	* récupére background (tous les domaines dans espèces)
+
