@@ -27,7 +27,7 @@ graph LR
     14[Pathway list]
   end
 
-  subgraph Domain
+  subgraph Protein Domain
     17[Enrichment algorithm]
     18[Statistical methods]
     19[Domain list]
@@ -35,6 +35,7 @@ graph LR
 
   subgraph Dev
     A((readFile))
+    B((extractGeneID))
   end
 
   subgraph Biomarts
@@ -51,19 +52,29 @@ graph LR
     h((gseGO))
     i((dropGO))
     j((gofilter))
+
+    k((search_kegg_organism))
+    l((enrichKEGG))
+    m((gseKEGG))
   end
 
   go{Gene<br>Ontology}
+  pd{Protein<br>Domain}
 
   1-->A
   2-->A
+  A-->B
+
   3-->b
   a-->4
+  k-->4
   4-->b
   b-->c
-  A-->c
+  B-->c
   c-->e
 
+  B-->e
+  B-->h
   9-->e
   15-->e
   e-->f
@@ -76,3 +87,11 @@ graph LR
   f-->16
   h-->16
   g-->16
+
+  B-->l
+  B-->m
+  17-->pd
+  18-->pd
+  pd-->m
+  l-->19
+  m-->19
