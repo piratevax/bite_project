@@ -14,9 +14,11 @@ graph LR
   end
 
   subgraph Gene Ontology
-    9[GO term ontology]
+    9[GO terms ontology]
+    15[GO level]
     10[Enrichment algorithm]
     11[Statistical methods]
+    16[Results]
   end
 
   subgraph Pathway
@@ -26,6 +28,9 @@ graph LR
   end
 
   subgraph Domain
+    17[Enrichment algorithm]
+    18[Statistical methods]
+    19[Domain list]
   end
 
   subgraph Dev
@@ -48,6 +53,8 @@ graph LR
     j((gofilter))
   end
 
+  go{Gene<br>Ontology}
+
   1-->A
   2-->A
   3-->b
@@ -56,3 +63,16 @@ graph LR
   b-->c
   A-->c
   c-->e
+
+  9-->e
+  15-->e
+  e-->f
+  e-->g
+  i-->g
+  j-->g
+  10-->go
+  11-->go
+  go-->h
+  f-->16
+  h-->16
+  g-->16
