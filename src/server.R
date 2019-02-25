@@ -9,6 +9,7 @@
 
 library(shiny)
 library(shinythemes)
+source("src/some_functions.R")
 
 function(input, output) {
   

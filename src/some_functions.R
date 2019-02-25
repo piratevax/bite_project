@@ -25,4 +25,4 @@ DEBUG <- function() {
   getFilteredSet(read, pvalFilter, l2FC)
 }
 
-DEBUG()
+#DEBUG()
