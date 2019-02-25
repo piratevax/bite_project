@@ -1,3 +1,6 @@
 *.csv
 *.tsv
 *.swp
+*.pdf
+*.tgz
+exo_reac/
