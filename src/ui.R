@@ -5,7 +5,7 @@
 # Author :
 #   Sophia ACHAIBOU
 #   Joris ARGENTIN
-#   Xavier BUSSEL
+#   Xavier BUSSELL
 #   Hatim EL JAZOULI
 
 
