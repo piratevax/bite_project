@@ -20,11 +20,17 @@ shinyServer(function(session, input, output) {
   # })
   #input$goButton
   rv <- reactiveValues()
-  rv$null <- "Files must be loaded"
+  rv$null <- "File must be loaded"
   
   file1 <- reactive({
     if (!is.null(input$file1)) {
-      readFile(input$file1$datapath, header = input$header)
+      # validate(
+      #   need(!is.null(input$file1), rv$null)
+      # )
+      if (DEBUG.var)
+        cat(paste("#D# -> file:", input$file1$datapath, "\n", sep = " "))
+      ### TODO : ne pas avoir le header en dure
+      readFile(input$file1$datapath, header = T)
     } else {
       NULL
     }
@@ -35,12 +41,16 @@ shinyServer(function(session, input, output) {
   observeEvent(
     input$goButton, {
       rv$read <- file1()
+      if (DEBUG.var)
+        cat(paste("#D# ->", rv$read, "\n"), sep = " ")
       rv$organismSelected <- organismSelected()
+      if (DEBUG.var)
+        cat(paste("#D# ->", rv$organismSelected, "\n"), sep = " ")
       if (is.null(rv$read)) {
-        ### TODO : update n'apparait pas
-        updateSelectInput(session, "file1", choices="Files must be loaded")
+        session$sendCustomMessage(type = 'testmessage',
+                                  message = 'You have to select a file')
         if (DEBUG.var)
-          cat("Files must be loaded\n")
+          cat(paste("#D# ->", rv$null, "\n"), sep = " ")
       }
     })
 })
