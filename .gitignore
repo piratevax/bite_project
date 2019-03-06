@@ -3,4 +3,7 @@
 *.swp
 *.pdf
 *.tgz
+.Rhistory
+.Rdata
 exo_reac/
+test/
