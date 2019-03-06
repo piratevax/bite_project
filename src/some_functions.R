@@ -17,8 +17,17 @@ getFilteredSet <- function(tab, pval, l2FC) {
   return(read)   
 }
 
+getBiomartDataset <- function() {
+  library(biomaRt)
+  ensembl <- useMart("ensembl")
+  ensemblDataset <- listDatasets(ensembl)$dataset
+  listDataset <- as.list(ensemblDataset)
+  names(listDataset) <- str_extract(ensemblDataset, "^[a-zA-Z0-9]+")
+  return(listDataset)
+}
+
 DEBUG <- function() {
-  path <- "DE2.TH_ccRCC_checkpoints_from_all.csv"#kidney_tumour_ppl_stage.csv"
+  path <- "kidney_tumour_ppl_genetic_checkpoints.csv"#kidney_tumour_ppl_stage.csv"
   read <- readFile(path, TRUE)
   pvalFilter <- 0.05
   l2FC <- 1
