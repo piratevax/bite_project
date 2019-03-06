@@ -13,6 +13,7 @@
 library(shiny)
 library(shinythemes)
 library(DT)
+source("some_functions.R")
 
 # Define UI for data upload app ----
 ui <- fluidPage( 
@@ -44,11 +45,8 @@ ui <- fluidPage(
       
       # Horizontal line ----
       tags$hr(),
-      selectInput("db", "Species :", 
-                choices=list("Human"="Human",
-                             "Mouse"="Mouse", 
-                             "Other"="Other extracted from BioMart"
-                  )),
+      selectInput("db", "Species :",
+                choices = getBiomartDataset()),
       tags$hr(),
 
       tabsetPanel(
