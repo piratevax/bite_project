@@ -3,6 +3,12 @@
 *.swp
 *.pdf
 *.tgz
+*.png
+*.jpg
+*.jpeg
+*.tiff
+*.svg
+*.bmp
 .Rhistory
 .Rdata
 exo_reac/
