@@ -27,7 +27,7 @@ getBiomartDataset <- function() {
 }
 
 DEBUG <- function() {
-  path <- "kidney_tumour_ppl_genetic_checkpoints.csv"#kidney_tumour_ppl_stage.csv"
+  path <- "DE2.TH_ccRCC_checkpoints_from_all.csv"
   read <- readFile(path, TRUE)
   pvalFilter <- 0.05
   l2FC <- 1
