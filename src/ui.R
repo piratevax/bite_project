@@ -32,7 +32,6 @@ ui <- fluidPage(
                 accept = c("text/csv",
                            "text/comma-separated-values,text/plain",
                            ".csv")),
-    
       
       tags$hr(),
       
@@ -58,7 +57,10 @@ ui <- fluidPage(
       ),
 
      
-        actionButton("goButton", "GO !")
+        actionButton("goButton", "GO !"),
+        singleton(
+          tags$head(tags$script(src = "message-handler.js"))
+        )
       
     ),
    
