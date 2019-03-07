@@ -1,4 +1,6 @@
 library(stringr)
+library(ggplot2)
+library(biomaRt)
 
 readFile <- function(path, header) {
   # if (! (str_detect(path, ".csv$") || str_detect(path, ".tsv$"))) {
@@ -18,7 +20,6 @@ getFilteredSet <- function(tab, pval, l2FC) {
 }
 
 getBiomartDataset <- function() {
-  library(biomaRt)
   ensembl <- useMart("ensembl")
   ensemblDataset <- listDatasets(ensembl)$dataset
   listDataset <- as.list(ensemblDataset)
@@ -27,13 +28,23 @@ getBiomartDataset <- function() {
 }
 
 generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0, name = "default_volcano_plot.png") {
-  library(ggplot2)
   x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
   levels(x$limits) <- c("S", "N")
   png(name, 1000, 1000, bg = "transparent")
   g <- ggplot(x, aes(x=log2FoldChange, y=-log10(padj), colour=limits)) +
     geom_point(alpha=0.8, size=2) +
     xlab("log2 fold change") + ylab("-log10 p-value adjusted")
+  print(g)
+  void <- dev.off()
+}
+
+generateMAPlot <- function(x, alpha = 0.05, l2FC = 0, name = "default_MAplot.png") {
+  x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
+  levels(x$limits) <- c("S", "N")
+  png(name, 1000, 1000, bg = "transparent")
+  g <- ggplot(x, aes(x=baseMean, y=log2FoldChange, colour=limits)) +
+    geom_point(alpha=0.8, size=2) +
+    xlab("Means of normalized counts") + ylab("log2 fold change")
   print(g)
   void <- dev.off()
 }
@@ -45,6 +56,7 @@ DEBUG <- function() {
   l2FC <- 1
   getFilteredSet(read, pvalFilter, l2FC)
   generateVolcanoPlot(read, l2FC = l2FC)
+  generateMAPlot(read, l2FC = l2FC)
 }
 
 #DEBUG()
