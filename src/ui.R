@@ -77,18 +77,17 @@ ui <- fluidPage(
                   tags$hr(),
                   
                   div(style="display:inline-block",
-                      sliderInput("FC", "log Fold-change:",
-                                  min = 0, max = 10,
-                                 value = 2, step = 1)
+                      sliderInput("lFC", "log Fold-change:",
+                                  min = -10, max = 10,
+                                 value = 0, step = 1)
                   ),
                   
                   div(style="display:inline-block",
-                     checkboxGroupInput("cbAdjust", "",
-                                     c("Absolute value"="Absolute value"))
+                     checkboxInput("absoluteValue", "Absolute value", FALSE)
                   ),
           
                   tags$hr(),
-                  sliderInput("p-value", "p-value:",
+                  sliderInput("pvalue", "p-value:",
                               min = 0, max = 0.1,
                               value = 0.05, step = 0.01),
                   tags$hr(),
