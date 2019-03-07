@@ -74,10 +74,21 @@ shinyServer(function(session, input, output) {
   
   
   #### Whole Data Inspection  ####
+  absoluteValue <- reactive({
+    input$absoluteValue
+  })
   wdi.checkbox <- reactive({
     if (DEBUG.var)
       cat(paste("#D# -> wdi.checkbox: ", input$checkbox, "\n", sep =""))
     input$checkbox
+  })
+  
+  observe({
+    rv$absolute <- absoluteValue()
+    if (rv$absolute)
+      updateSliderInput(session, "lFC", min = 0)
+    else
+      updateSliderInput(session, "lFC", min = -10)
   })
   
   ### TODO : prendre en compte pval et lfc
