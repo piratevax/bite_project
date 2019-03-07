@@ -97,7 +97,13 @@ ui <- fluidPage(
                                               "Benjamini-Hochberg" = 2
                                ), 
                                selected = 1),
-                  actionButton("submitWDI", "Submit")
+                  actionButton("submitWDI", "Submit"),
+                  
+                  tags$hr(),
+                  plotOutput("plotVulcanoPlot"),
+                  
+                  tags$hr(),
+                  plotOutput("plotMAPlot")
                   ),
           
           tabPanel("GO-Enrichment",
