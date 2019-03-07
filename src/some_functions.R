@@ -27,27 +27,29 @@ getBiomartDataset <- function() {
   return(listDataset)
 }
 
-generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0, name = "default_volcano_plot.png") {
+generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0) {
   x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
   levels(x$limits) <- c("S", "N")
-  png(name, 1000, 1000, bg = "transparent")
   g <- ggplot(x, aes(x=log2FoldChange, y=-log10(padj), colour=limits)) +
     geom_point(alpha=0.8, size=2) +
     xlab("log2 fold change") + ylab("-log10 p-value adjusted")
-  print(g)
-  void <- dev.off()
+  return(g)
 }
 
-generateMAPlot <- function(x, alpha = 0.05, l2FC = 0, name = "default_MAplot.png") {
+generateMAPlot <- function(x, alpha = 0.05, l2FC = 0) {
   x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
   levels(x$limits) <- c("S", "N")
-  png(name, 1000, 1000, bg = "transparent")
   g <- ggplot(x, aes(x=baseMean, y=log2FoldChange, colour=limits)) +
     geom_point(alpha=0.8, size=2) +
     xlab("Means of normalized counts") + ylab("log2 fold change")
-  print(g)
-  void <- dev.off()
+  return(g)
 }
+
+writePlot <- function(graph, name = "default.png", width = 1000, height = 1000) {
+  png(name, width, height, bg = "transparent")
+  print(graph)
+  void <- dev.off()
+} 
 
 DEBUG <- function() {
   path <- "DE2.TH_ccRCC_checkpoints_from_all.csv"
