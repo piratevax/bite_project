@@ -71,7 +71,7 @@ ui <- fluidPage(
                   
                    tags$hr(),
               
-                  checkboxGroupInput("checkbox", "Output :",
+                  checkboxGroupInput("checkboxWDI", "Output :",
                                      c("Volcano plot"="volcano",
                                        "MA plot"="MAplot")),
                   tags$hr(),
@@ -113,7 +113,7 @@ ui <- fluidPage(
                                             "autre"="autre banque ?"
                                )),
                    tags$hr(),
-                   checkboxGroupInput("checkbox", "GO term ontology :",
+                   checkboxGroupInput("checkboxGOE", "GO term ontology :",
                                       c("Molecular function"="F",
                                         "Cellular component"="C",
                                         "Biological process"="P")),
@@ -124,7 +124,7 @@ ui <- fluidPage(
                                               ), 
                                 selected = 1),
                    tags$hr(),
-                   radioButtons("methode", "Statistical methods :",
+                   radioButtons("methodGOE", "Statistical methods :",
                                 choices = list("X²-test" = 1,
                                                "Fisher's exact test" = 2,
                                                "Binomial test" = 3,
@@ -133,8 +133,9 @@ ui <- fluidPage(
                    tags$hr(),
                    actionButton("submitGOE", "Submit")
                    
-                   
                    ),
+          
+          
           tabPanel("Pathway",
                    selectInput("db", "Database :", 
                                choices=list("GO"="GO",
