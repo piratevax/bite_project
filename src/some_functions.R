@@ -29,7 +29,7 @@ getBiomartDataset <- function() {
 
 generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0) {
   x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
-  levels(x$limits) <- c("S", "N")
+  levels(x$limits) <- c("N", "S")
   g <- ggplot(x, aes(x=log2FoldChange, y=-log10(padj), colour=limits)) +
     geom_point(alpha=0.8, size=2) +
     xlab("log2 fold change") + ylab("-log10 p-value adjusted")
@@ -38,7 +38,7 @@ generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0) {
 
 generateMAPlot <- function(x, alpha = 0.05, l2FC = 0) {
   x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
-  levels(x$limits) <- c("S", "N")
+  levels(x$limits) <- c("N", "S")
   g <- ggplot(x, aes(x=baseMean, y=log2FoldChange, colour=limits)) +
     geom_point(alpha=0.8, size=2) +
     xlab("Means of normalized counts") + ylab("log2 fold change")
