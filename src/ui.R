@@ -108,7 +108,7 @@ ui <- fluidPage(
           tabPanel("GO-Enrichment",
                    #textInput("database", label = h3("Database"), value = "Enter database..."),
                    #tags$hr(),
-                   selectInput("db", "Database :", 
+                   selectInput("dbGOE", "Database :", 
                                choices=list("GO"="GO",
                                             "autre"="autre banque ?"
                                )),
@@ -118,7 +118,7 @@ ui <- fluidPage(
                                         "Cellular component"="C",
                                         "Biological process"="P")),
                    tags$hr(),
-                   radioButtons("EA", "Enrichment algorithm :",
+                   radioButtons("enrichmentAlgorithmGOE", "Enrichment algorithm :",
                                 choices = list("SEA" = 1,
                                                "GSEA" = 2
                                               ), 
@@ -137,18 +137,18 @@ ui <- fluidPage(
           
           
           tabPanel("Pathway",
-                   selectInput("db", "Database :", 
+                   selectInput("dbPathway", "Database :", 
                                choices=list("GO"="GO",
                                             "autre"="autre banque ?"
                                )),
                    tags$hr(),
-                   radioButtons("EA", "Enrichment algorithm :",
+                   radioButtons("enrichmentAlgorithmPathway", "Enrichment algorithm :",
                                 choices = list("SEA" = 1,
                                                "GSEA" = 2
                                                ), 
                                 selected = 1),
                    tags$hr(),
-                   radioButtons("methode", "Statistical methods :",
+                   radioButtons("methodPathway", "Statistical methods :",
                                 choices = list("X²-test" = 1,
                                                "Fisher's exact test" = 2,
                                                "Binomial test" = 3,
@@ -157,21 +157,22 @@ ui <- fluidPage(
                    tags$hr(),
                    actionButton("submitPathway", "Submit")
                    
-                   
                    ),
+          
+          
           tabPanel("Protein domains",
                    #selectInput("db", "Database :", 
                    #           choices=list("GO"="GO",
                    #                          "autre"="autre banque ?"
                    #            )),
                    tags$hr(),
-                   radioButtons("EA", "Enrichment algorithm :",
+                   radioButtons("enrichmentAlgorithmProtein", "Enrichment algorithm :",
                                 choices = list("SEA"=1,
                                 "GSEA" = 2),
                                 selected = 1),
                    tags$hr(),
                  
-                   radioButtons("methode", "Statistical methods :",
+                   radioButtons("methodProtein", "Statistical methods :",
                                 choices = list("X²-test" = 1,
                                                "Fisher's exact test" = 2,
                                                "Binomial test" = 3,
