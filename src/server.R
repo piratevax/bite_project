@@ -23,7 +23,6 @@ shinyServer(function(session, input, output) {
   rv$null <- "File must be loaded"
   rv$queue <- NULL
   rv$queue.lastSize <- 0
-  rv$wdi <- FALSE
   
   #### Sidebar #####
   file1 <- reactive({
@@ -81,13 +80,14 @@ shinyServer(function(session, input, output) {
   
   
   #### Whole Data Inspection  ####
+  rv$wdi <- FALSE
   absoluteValue <- reactive({
     input$absoluteValue
   })
   wdi.checkbox <- reactive({
     if (DEBUG.var)
       cat(paste("#D# -> wdi.checkbox: ", input$checkbox, "\n", sep =""))
-    input$checkbox
+    input$checkboxWDI
   })
   wdi.log2FoldChange <- reactive({
     input$lFC
@@ -133,4 +133,18 @@ shinyServer(function(session, input, output) {
         })
       }
     })
+  
+  
+  #### GO-enrichment ####
+  rv$goe <- FALSE
+  goe.checkbox <- reactive({
+    input$checkboxGOE
+  })
+  goe.enrichmentAnalysis <- reactive({
+    input$EA
+  })
+  goe.statisticalMethod <- reactive({
+    input$methodGOE
+  })
+  
 })
