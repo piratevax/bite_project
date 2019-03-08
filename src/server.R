@@ -137,14 +137,40 @@ shinyServer(function(session, input, output) {
   
   #### GO-enrichment ####
   rv$goe <- FALSE
+  goe.db <- reactive({
+    input$dbGOE
+  })
   goe.checkbox <- reactive({
     input$checkboxGOE
   })
   goe.enrichmentAnalysis <- reactive({
-    input$EA
+    input$enrichmentAlgorithmGOE
   })
   goe.statisticalMethod <- reactive({
     input$methodGOE
+  })
+  
+  
+  #### Pathway ####
+  rv$pathway <- FALSE
+  pathway.db <- reactive({
+    input$dbPathway
+  })
+  pathway.enrichmentAnalysis <- reactive({
+    input$enrichmentAlgorithmPathway
+  })
+  pathway.statisticalMethod <- reactive({
+    input$methodPathway
+  })
+  
+  
+  #### Protein Domain ####
+  rv$protein <- FALSE
+  protein.enrichmentAnalysis <- reactive({
+    input$enrichmentAlgorithmProtein
+  })
+  protein.statisticalMethod <- reactive({
+    input$methodProtein
   })
   
 })
