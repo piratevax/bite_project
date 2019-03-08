@@ -63,12 +63,12 @@ shinyServer(function(session, input, output) {
       if (rv$wdi) {
         if (rv$volcanoPlot) {
         output$plotVulcanoPlot <- renderPlot({
-            generateVolcanoPlot((rv$read))
+            generateVolcanoPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC)
           })
         }
         if (rv$MAPlot) {
         output$plotMAPlot <- renderPlot({
-            generateMAPlot((rv$read))
+            generateMAPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC)
           })
         }
       }
@@ -83,6 +83,12 @@ shinyServer(function(session, input, output) {
     if (DEBUG.var)
       cat(paste("#D# -> wdi.checkbox: ", input$checkbox, "\n", sep =""))
     input$checkbox
+  })
+  wdi.log2FoldChange <- reactive({
+    input$lFC
+  })
+  wdi.pvalue <- reactive({
+    input$pvalue
   })
   
   observe({
@@ -99,6 +105,8 @@ shinyServer(function(session, input, output) {
       rv$volcanoPlot <- FALSE
       rv$MAPlot <- FALSE
       rv$wdi <- TRUE
+      rv$pvalue <- wdi.pvalue()
+      rv$l2FC <- wdi.log2FoldChange()
       tmp <- wdi.checkbox()
       for (i in tmp) {
         if (i == "volcano") {
