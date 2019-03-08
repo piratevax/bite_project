@@ -72,6 +72,11 @@ shinyServer(function(session, input, output) {
           })
         }
       }
+      rv$queue <- NULL
+      rv$queue.lastSize <- 0
+      output$queue <- DT::renderDataTable({
+        NULL
+      })
     })
   
   
