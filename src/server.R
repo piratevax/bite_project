@@ -21,6 +21,8 @@ shinyServer(function(session, input, output) {
   #input$goButton
   rv <- reactiveValues()
   rv$null <- "File must be loaded"
+  rv$queue <- NULL
+  rv$queue.lastSize <- 0
   rv$wdi <- FALSE
   
   #### Sidebar #####
@@ -99,10 +101,23 @@ shinyServer(function(session, input, output) {
       rv$wdi <- TRUE
       tmp <- wdi.checkbox()
       for (i in tmp) {
-        if (i == "volcano") rv$volcanoPlot <- TRUE
-        if (i == "MAplot") rv$MAPlot <- TRUE
+        if (i == "volcano") {
+          rv$volcanoPlot <- TRUE
+          rv$queue <- c(rv$queue, list("WDI", "Volcano plot"))
+        }
+        if (i == "MAplot") {
+          rv$MAPlot <- TRUE
+          rv$queue <- c(rv$queue, list("WDI", "MA-plot"))
+        }
       }
       if (DEBUG.var)
         cat(paste("#D# volcano plot: ", rv$volcanoPlot, "\n", "#D# MA-plot: ", rv$MAPlot, "\n", sep = ""))
+      tmp <- length(rv$queue) / 2
+      if (tmp != rv$queue.lastSize) {
+        rv$queue.lastSize <- tmp
+        output$queue <- DT::renderDataTable({
+          `colnames<-`(matrix(cbind(rv$queue), ncol = 2, byrow = T), c("tab", "job"))
+        })
+      }
     })
 })
