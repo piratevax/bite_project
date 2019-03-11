@@ -4,4 +4,4 @@ Bioinformatics Interactive Toolbox for Enrichment analysis, or BITE Analysis, is
 
 It is a Shiny app that provides a graphical interface to perform enrichment analysis for RNA-Seq gene sets (and associated values).
 
-#Input files
+# Input files
