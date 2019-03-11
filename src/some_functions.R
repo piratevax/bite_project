@@ -49,7 +49,11 @@ writePlot <- function(graph, name = "default.png", width = 1000, height = 1000) 
   png(name, width, height, bg = "transparent")
   print(graph)
   void <- dev.off()
-} 
+}
+
+getSignificativeGene <- function(x, alpha = 0.05, l2FC = 0) {
+  return(x[which(abs(x$log2FoldChange) > 2 & x$padj < 0.05),])
+}
 
 DEBUG <- function() {
   path <- "DE2.TH_ccRCC_checkpoints_from_all.csv"
