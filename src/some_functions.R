@@ -1,6 +1,9 @@
-library(stringr)
-library(ggplot2)
-library(biomaRt)
+require(stringr)
+require(ggplot2)
+require(biomaRt)
+require(org.Hs.eg.db)
+require(clusterProfiler)
+
 
 readFile <- function(path, header) {
   # if (! (str_detect(path, ".csv$") || str_detect(path, ".tsv$"))) {
@@ -53,6 +56,18 @@ writePlot <- function(graph, name = "default.png", width = 1000, height = 1000) 
 
 getSignificativeGene <- function(x, alpha = 0.05, l2FC = 0) {
   return(x[which(abs(x$log2FoldChange) > 2 & x$padj < 0.05),])
+}
+
+gseaGO <- function(geneList, background, alpha = 0.05, ont, adjustMethod = "ALL") {
+  ego <- gseGO(geneList = geneList,
+    OrgDb = org.Hs.eg.db,
+    ont = ont, # one of "BP", "MF", "CC" or "ALL"
+    nPerm = 1000,
+    minGSSize = 100,
+    maxGSSize = 500,
+    pAdjustMethod = adjustMethod,
+    pvalueCutoff = alpha)
+  return(ego)
 }
 
 DEBUG <- function() {
