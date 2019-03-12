@@ -10,9 +10,9 @@
 
 
 
-library(shiny)
-library(shinythemes)
-library(DT)
+require(shiny)
+require(shinythemes)
+require(DT)
 source("some_functions.R")
 
 # Define UI for data upload app ----

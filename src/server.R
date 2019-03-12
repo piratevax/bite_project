@@ -7,8 +7,11 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
-library(shinythemes)
+require(shiny)
+require(shinythemes)
+require(org.Hs.eg.db)
+require(clusterProfiler)
+require(pathview)
 source("some_functions.R")
 
 shinyServer(function(session, input, output) {
