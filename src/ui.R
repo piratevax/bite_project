@@ -177,6 +177,7 @@ ui <- fluidPage(
                  radioButtons("methodProtein", "Statistical methods :",
                               choices = list("X??-test" = "chi",
                                              "Fisher's exact test" = "fisher",
+                                             "Binomial test" = "binom",
                                              "G-test" = "gtest",
                                              "Hypergeometric test" = "hypergeo"), 
                               selected = "chi"),

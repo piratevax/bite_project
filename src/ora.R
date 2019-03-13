@@ -2,14 +2,11 @@
        ## SINGULAR ENRICHMENT ANALYSIS / OVER REPRESENTATION ANALYSIS ##
         ###############################################################
 
-# TECHNICAL SHIT
-# TODO: convert NCBI to Ensembl if NCBI IDs provided (outside this)
-
 # Chargement des bibliothèques
-library(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
-library(dplyr)                                                                  # manipulation données
-library(DescTools)                                                              # g-test
-library(PFAM.db)                                                                # conversion ID Pfam
+require(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
+require(dplyr)                                                                  # manipulation données
+require(DescTools)                                                              # g-test
+require(PFAM.db)                                                                # conversion ID Pfam
 
 ################################ MAIN FUNCTION ################################
 
@@ -202,19 +199,24 @@ FromIDtoName <-
       new.col <- data.frame(correspondance[ids, 2])
       names(new.col) <- "pfam_description"
       complete.list <-
-        data.frame(cbind(selected.terms[1], new.col, selected.terms[2:6]))
+        data.frame(cbind(enrichment.list[1], new.col, enrichment.list[2:6]))
     } else if (database == "interpro") {
       species.dataset <- paste0(species, "_gene_ensembl")
       ensembl <-
         useMart(biomart = "ensembl", dataset = species.dataset)
       queried.attributes <-
         c("interpro", "interpro_short_description")
-      interpro.description <- getBM(
+      correspondance <- getBM(
         attributes = queried.attributes,
         filters = "interpro",
         values = ids,
         mart = ensembl
       )
+      rownames(correspondance) <- correspondance$interpro
+      new.col <- data.frame(correspondance[ids, 2])
+      names(new.col) <- "interpro_description"
+      complete.list <-
+        data.frame(cbind(enrichment.list[1], new.col, enrichment.list[2:6]))
     }
     
     return(complete.list)
