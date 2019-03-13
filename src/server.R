@@ -64,12 +64,12 @@ shinyServer(function(session, input, output) {
         cat(paste("#D# rv$wdi: ", rv$wdi, "\n", sep = ""))
       if (rv$wdi) {
         if (rv$volcanoPlot) {
-        output$plotVulcanoPlot <- renderPlot({
+          output$plotVulcanoPlot <- renderPlot({
             generateVolcanoPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC)
           })
         }
         if (rv$MAPlot) {
-        output$plotMAPlot <- renderPlot({
+          output$plotMAPlot <- renderPlot({
             generateMAPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC)
           })
         }
@@ -87,11 +87,12 @@ shinyServer(function(session, input, output) {
   absoluteValue <- reactive({
     input$absoluteValue
   })
-  wdi.checkbox <- reactive({
+  wdi.output <- reactive({
     if (DEBUG.var)
-      cat(paste("#D# -> wdi.checkbox: ", input$checkbox, "\n", sep =""))
-    input$checkboxWDI
+      cat(paste("#D# -> wdi.checkbox: ", input$WDIoutput, "\n", sep =""))
+    input$WDIoutput
   })
+
   wdi.log2FoldChange <- reactive({
     input$lFC
   })
@@ -173,6 +174,9 @@ shinyServer(function(session, input, output) {
     input$enrichmentAlgorithmProtein
   })
   protein.statisticalMethod <- reactive({
+    input$methodProtein
+  })
+  protein.updown <- reactive({
     input$methodProtein
   })
   
