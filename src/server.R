@@ -44,6 +44,11 @@ shinyServer(function(session, input, output) {
   organismSelected <- reactive({
     input$db
   })
+  idSource <- reactive({
+    if (DEBUG.var)
+      cat(paste("#D# -> ID source: ", input$IDsource, "\n", sep =""))
+    input$IDsource
+  })
   
   observeEvent(
     input$goButton, {
@@ -63,14 +68,15 @@ shinyServer(function(session, input, output) {
       if (DEBUG.var)
         cat(paste("#D# rv$wdi: ", rv$wdi, "\n", sep = ""))
       if (rv$wdi) {
+        rv$absoluteValue <- absoluteValue()
         if (rv$volcanoPlot) {
           output$plotVulcanoPlot <- renderPlot({
-            generateVolcanoPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC)
+            generateVolcanoPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC, absolute = rv$absoluteValue)
           })
         }
         if (rv$MAPlot) {
           output$plotMAPlot <- renderPlot({
-            generateMAPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC)
+            generateMAPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC, absolute = rv$absoluteValue)
           })
         }
         
