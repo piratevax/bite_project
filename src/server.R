@@ -118,16 +118,21 @@ shinyServer(function(session, input, output) {
       rv$pvalue <- wdi.pvalue()
       rv$l2FC <- wdi.log2FoldChange()
       tmp <- wdi.radiobutton()
-      for (i in tmp) {
-        if (i == "volcano") {
+      # for (i in tmp) {
+        if (tmp == "volcano") {
           rv$volcanoPlot <- TRUE
           rv$queue <- c(rv$queue, list("WDI", "Volcano plot"))
         }
-        if (i == "MAplot") {
+        else if (tmp == "MAplot") {
           rv$MAPlot <- TRUE
           rv$queue <- c(rv$queue, list("WDI", "MA-plot"))
         }
-      }
+        else if (tmp == "both") {
+          rv$MAPlot <- TRUE
+          rv$volcanoPlot <- TRUE
+          rv$queue <- c(rv$queue, list("WDI", "MA-plot", "WDI", "Volcano plot"))
+        }
+      # }
       if (DEBUG.var)
         cat(paste("#D# volcano plot: ", rv$volcanoPlot, "\n", "#D# MA-plot: ", rv$MAPlot, "\n", sep = ""))
       tmp <- length(rv$queue) / 2
