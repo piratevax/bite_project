@@ -160,6 +160,13 @@ shinyServer(function(session, input, output) {
     input$methodGOE
   })
   
+  observeEvent(
+    input$submitGOE, {
+      rv$goe <- TRUE
+      rv$checkboxGOE <- goe.enrichmentAnalysis()
+      rv$statisticalMethod <- goe.enrichmentAnalysis()
+    }
+  )
   
   #### Pathway ####
   rv$pathway <- FALSE
