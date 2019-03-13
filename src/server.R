@@ -65,6 +65,7 @@ shinyServer(function(session, input, output) {
           cat(paste("#D# -> ", rv$null, "\n"), sep = "")
       }
       
+      ### WDI
       if (DEBUG.var)
         cat(paste("#D# rv$wdi: ", rv$wdi, "\n", sep = ""))
       if (rv$wdi) {
@@ -79,15 +80,37 @@ shinyServer(function(session, input, output) {
             generateMAPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC, absolute = rv$absoluteValue)
           })
         }
-        
       }
+      output$tableWDI <- DT::renderDataTable({
+        getSignificativeGene(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC, absolute = rv$absoluteValue)
+      })
+      
+      ### GOE
+      if (DEBUG.var)
+        cat(paste("#D# rv$goe: ", rv$goe, "\n", sep = ""))
+      if (rv$goe) {
+        if (DEBUG.var)
+          cat(paste("#D# GOE ontology:\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, sep = ""))
+        if (rv$allGO) {
+          rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue)
+        } else {
+          if (rv$MF) {
+            rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, ont = "MF")
+          } else if (rv$CC) {
+            rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, ont = "CC")
+          } else if (rv$BP) {
+            rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, ont = "BP")
+          }
+        }
+        output$tableGOE <- DT::renderDataTable({
+          GOList(rv$gseaGO)
+        })
+      }
+      
       rv$queue <- NULL
       rv$queue.lastSize <- 0
       output$queue <- DT::renderDataTable({
         NULL
-      })
-      output$tableWDI <- DT::renderDataTable({
-        getSignificativeGene(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC, absolute = rv$absoluteValue)
       })
     })
   
@@ -174,8 +197,34 @@ shinyServer(function(session, input, output) {
   observeEvent(
     input$submitGOE, {
       rv$goe <- TRUE
+      rv$MF <- FALSE
+      rv$CC <- FALSE
+      rv$BP <- FALSE
+      rv$allGO <- FALSE
       rv$checkboxGOE <- goe.enrichmentAnalysis()
       rv$statisticalMethod <- goe.enrichmentAnalysis()
+      
+      tmp <- goe.checkbox()
+      for (i in tmp) {
+        if (i == "MF") rv$MF <- TRUE
+        if (i == "CC") rv$CC <- TRUE
+        if (i == "BP") rv$BP <- TRUE
+      }
+      if (rv$MF && rv$CC && rv$BP) rv$allGO = TRUE
+      if (rv$allGO) {
+        rv$queue <- c(rv$queue, list("GOE", "all"))
+      } else {
+        if (rv$MF) rv$queue <- c(rv$queue, list("GOE", "MF"))
+        if (rv$CC) rv$queue <- c(rv$queue, list("GOE", "CC"))
+        if (rv$BP) rv$queue <- c(rv$queue, list("GOE", "BP"))
+      }
+      tmp <- length(rv$queue) / 2
+      if (tmp != rv$queue.lastSize) {
+        rv$queue.lastSize <- tmp
+        output$queue <- DT::renderDataTable({
+          `colnames<-`(matrix(cbind(rv$queue), ncol = 2, byrow = T), c("tab", "job"))
+        })
+      }
     }
   )
   
