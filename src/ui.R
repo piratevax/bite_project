@@ -41,12 +41,13 @@ ui <- fluidPage(
       radioButtons("IDsource", "ID gene source",
                    choices = list("GeneNCBI" = "ncbi",
                                   "Ensembl" = "ensembl"),
-                   selected = 1),
+                   selected = 2),
       
       # Horizontal line ----
       tags$hr(),
       selectInput("db", "Species :",
-                  choices = getBiomartDataset()),
+                  #choices = getBiomartDataset()),
+                  choices = list("hsapiens"="hsapiens")),
       tags$hr(),
       
       tabsetPanel(
