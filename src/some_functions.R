@@ -62,8 +62,12 @@ writePlot <- function(graph, name = "default.png", width = 1000, height = 1000) 
   void <- dev.off()
 }
 
-getSignificativeGene <- function(x, alpha = 0.05, l2FC = 0) {
-  return(x[which(abs(x$log2FoldChange) > 2 & x$padj < 0.05),])
+getSignificativeGene <- function(x, alpha = 0.05, l2FC = 0, absolute = TRUE) {
+  if (absolute) {
+    return(x[which(abs(x$log2FoldChange) > l2FC & x$padj < alpha),])
+  } else {
+    return(x[which(x$log2FoldChange > l2FC & x$padj < alpha),])
+  }
 }
 
 gseaGO <- function(geneList, background, alpha = 0.05, ont, adjustMethod = "ALL") {

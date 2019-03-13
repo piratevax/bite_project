@@ -86,6 +86,9 @@ shinyServer(function(session, input, output) {
       output$queue <- DT::renderDataTable({
         NULL
       })
+      output$tableWDI <- DT::renderDataTable({
+        getSignificativeGene(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC, absolute = rv$absoluteValue)
+      })
     })
   
   
