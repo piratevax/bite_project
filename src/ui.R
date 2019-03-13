@@ -71,14 +71,10 @@ ui <- fluidPage(
                  
                  tags$hr(),
                  
-                 radioButtons("WDIoutput", "Output :",
+                 radioButtons("outputWDI", "Output:",
                               choices = list("Volcano plot" = "volcano",
-                                             "MA plot" = "MAplot",
-                                             "Both" = "bothplot"
-                              ), 
-                              selected = "volcano"),
-                 
-
+                                             "MA plot" = "maplot",
+                                             "Both" = "both")),
                  tags$hr(),
                  
                  div(style="display:inline-block",
@@ -184,7 +180,7 @@ ui <- fluidPage(
                                              "Hypergeometric test" = "hypergeo"), 
                               selected = "chi"),
                  
-                 radioButtons("updown", "Regulated genes:",
+                 radioButtons("updownProteinDomain", "Regulated genes:",
                               choices = list("Up" = "up",
                                              "Down" = "down",
                                              "Both" = "both")),

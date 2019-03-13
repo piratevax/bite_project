@@ -87,11 +87,12 @@ shinyServer(function(session, input, output) {
   absoluteValue <- reactive({
     input$absoluteValue
   })
-  wdi.output <- reactive({
+  wdi.radiobutton <- reactive({
     if (DEBUG.var)
-      cat(paste("#D# -> wdi.checkbox: ", input$WDIoutput, "\n", sep =""))
-    input$WDIoutput
+      cat(paste("#D# -> wdi.radiobutton: ", input$outputWDI, "\n", sep =""))
+    input$outputWDI
   })
+  
 
   wdi.log2FoldChange <- reactive({
     input$lFC
@@ -116,7 +117,7 @@ shinyServer(function(session, input, output) {
       rv$wdi <- TRUE
       rv$pvalue <- wdi.pvalue()
       rv$l2FC <- wdi.log2FoldChange()
-      tmp <- wdi.checkbox()
+      tmp <- wdi.radiobutton()
       for (i in tmp) {
         if (i == "volcano") {
           rv$volcanoPlot <- TRUE
@@ -176,7 +177,7 @@ shinyServer(function(session, input, output) {
   protein.statisticalMethod <- reactive({
     input$methodProtein
   })
-  protein.updown <- reactive({
+  protein.updownProteinDomain <- reactive({
     input$methodProtein
   })
   
