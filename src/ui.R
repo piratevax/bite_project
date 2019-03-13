@@ -104,7 +104,10 @@ ui <- fluidPage(
                  plotOutput("plotVulcanoPlot"),
                  
                  tags$hr(),
-                 plotOutput("plotMAPlot")
+                 plotOutput("plotMAPlot"),
+                 tags$hr(),
+                 
+                  tabPanel("Raw data", DT::dataTableOutput("tableWDI"))
         ),
         
         tabPanel("GO-Enrichment",
