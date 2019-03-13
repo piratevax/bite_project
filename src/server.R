@@ -73,6 +73,7 @@ shinyServer(function(session, input, output) {
             generateMAPlot(rv$read, alpha = rv$pvalue, l2FC = rv$l2FC)
           })
         }
+        
       }
       rv$queue <- NULL
       rv$queue.lastSize <- 0
@@ -118,21 +119,22 @@ shinyServer(function(session, input, output) {
       rv$pvalue <- wdi.pvalue()
       rv$l2FC <- wdi.log2FoldChange()
       tmp <- wdi.radiobutton()
-      # for (i in tmp) {
-        if (tmp == "volcano") {
+      for (i in tmp) {
+        if (i == "volcano") {
           rv$volcanoPlot <- TRUE
           rv$queue <- c(rv$queue, list("WDI", "Volcano plot"))
         }
-        else if (tmp == "MAplot") {
+        if (i == "MAplot") {
           rv$MAPlot <- TRUE
           rv$queue <- c(rv$queue, list("WDI", "MA-plot"))
         }
-        else if (tmp == "both") {
+        if (i == "both") {
           rv$MAPlot <- TRUE
+          rv$queue <- c(rv$queue, list("WDI", "MA-plot"))
           rv$volcanoPlot <- TRUE
-          rv$queue <- c(rv$queue, list("WDI", "MA-plot", "WDI", "Volcano plot"))
+          rv$queue <- c(rv$queue, list("WDI", "Volcano plot"))
         }
-      # }
+      }
       if (DEBUG.var)
         cat(paste("#D# volcano plot: ", rv$volcanoPlot, "\n", "#D# MA-plot: ", rv$MAPlot, "\n", sep = ""))
       tmp <- length(rv$queue) / 2
