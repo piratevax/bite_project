@@ -2,11 +2,31 @@
        ## SINGULAR ENRICHMENT ANALYSIS / OVER REPRESENTATION ANALYSIS ##
         ###############################################################
 
+        # Args:
+        #   gene.set: (list, array) gene IDs to enrich
+        #   database: (character) database for fetching domain IDs
+        #   species: (character) species for querying biomaRt
+        #   test: (character) statistical test to use
+        #         "g-test", "chi-squared", "fisher", "hypergeometric",
+        #         "binomial"
+        #   enrichment: (character) directionality of the enrichment
+        #   threshold! (numeric) threshold for tests and selection of
+        #                        significant domains
+        #   correction: (character) multiple comparison correction method
+        #               "bonferonni", "BH"
+        #
+        # Returns:
+        #   list:
+        #   (dataframe) list of significantly enriched domains
+        #   (plot) plot of top 10 significantly enriched domains
+        
+
 # Chargement des bibliothèques
-require(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
-require(dplyr)                                                                  # manipulation données
-require(DescTools)                                                              # g-test
-require(PFAM.db)                                                                # conversion ID Pfam
+library(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
+library(dplyr)                                                                  # manipulation données
+library(DescTools)                                                              # g-test
+library(PFAM.db)                                                                # conversion ID Pfam
+library(ggplot2)
 
 ################################ MAIN FUNCTION ################################
 
@@ -42,8 +62,28 @@ ORA <- function (gene.set,
   enriched <-
     CorrectAndSelect(metrics, correction)
   complete.output <- FromIDtoName(enriched, database, species)
+  ordered.list <- complete.output[order(complete.output[7], decreasing = T),]
+  rownames(ordered.list) <- 1:nrow(ordered.list)
   
-  return(complete.output)
+  if (enrichment == "both") {
+    plot.title = ggtitle("Top 10 over/underrepresented protein domains")
+  } else if (enrichment == "over") {
+    plot.title = ggtitle("Top 10 overrepresented protein domains")
+  } else if (enrichment == "under") {
+    plot.title = ggtitle("Top 10 underrepresented protein domains")
+  }
+  
+  bar.plot <-
+    ggplot(ordered.list[1:10, ], aes(
+      x = reorder(ordered.list[1:10, 2],-log10(ordered.list[1:10, 7])),
+      y = -log10(ordered.list[1:10, 7])
+    )) +
+    ggtitle("Top 10 over/underrepresented protein domains") +
+    ylab("- log10 (adjusted p-value)") + xlab("") +
+    geom_bar(stat = 'identity') +
+    coord_flip()
+  
+  return(list("table" = complete.output, "graph" = bar.plot))
 }
 
 ################################################################################
@@ -120,6 +160,8 @@ RunTest <-
     success.in.sample <- contingency.table[1, 1]
     sample.size <- sum(contingency.table[, 1])
     success.in.population <- sum(contingency.table[1, ])
+    jaccard.index <-
+      success.in.sample / (sample.size + success.in.population - success.in.sample)
     alt <- "two.sided"
     if (enrichment == "over") {
       low.tail <- F
@@ -142,6 +184,9 @@ RunTest <-
       p.value <- test.results$p.value
     } else if (test == "hypergeometric") {
       failure.in.population <- sum(contingency.table[2, ])
+      if (enrichment == "over") {
+        success.in.sample <- success.in.sample - 1
+      }
       p.value <-
         phyper(
           success.in.sample,
@@ -150,6 +195,7 @@ RunTest <-
           sample.size,
           lower.tail = low.tail
         )
+      }
     } else if (test == "binomial") {
       succes.out.sample <- contingency.table[1, 2]
       out.sample.size <- sum(contingency.table[, 2])
@@ -165,8 +211,6 @@ RunTest <-
     } else {
       stop("Misspecified statistical test!")
     }
-    jaccard.index <-
-      success.in.sample / (sample.size + success.in.population - success.in.sample)
     metrics <-
       list(
         "ID" = rownames(contingency.table)[1],
