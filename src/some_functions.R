@@ -30,8 +30,12 @@ getBiomartDataset <- function() {
   return(listDataset)
 }
 
-generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0) {
-  x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
+generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0, absolute = TRUE) {
+  if (absolute) {
+    x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha)
+  } else {
+    x$limits <- as.factor(x$log2FoldChange > l2FC & x$padj < alpha)
+  }
   levels(x$limits) <- c("N", "S")
   g <- ggplot(x, aes(x=log2FoldChange, y=-log10(padj), colour=limits)) +
     geom_point(alpha=0.8, size=2) +
@@ -39,8 +43,12 @@ generateVolcanoPlot <- function(x, alpha = 0.05, l2FC = 0) {
   return(g)
 }
 
-generateMAPlot <- function(x, alpha = 0.05, l2FC = 0) {
-  x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha/dim(x)[1])
+generateMAPlot <- function(x, alpha = 0.05, l2FC = 0, absolute = TRUE) {
+  if (absolute) {
+    x$limits <- as.factor(abs(x$log2FoldChange) > l2FC & x$padj < alpha)
+  } else {
+    x$limits <- as.factor(x$log2FoldChange > l2FC & x$padj < alpha)
+  }
   levels(x$limits) <- c("N", "S")
   g <- ggplot(x, aes(x=baseMean, y=log2FoldChange, colour=limits)) +
     geom_point(alpha=0.8, size=2) +
