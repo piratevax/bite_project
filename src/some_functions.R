@@ -67,7 +67,7 @@ gseaGO <- function(geneList, background, alpha = 0.05, ont, adjustMethod = "ALL"
     maxGSSize = 500,
     pAdjustMethod = adjustMethod,
     pvalueCutoff = alpha)
-  return(list(ego$ID, ego$Description, ego$p.adjust))
+  return(ego)#list(ego$ID, ego$Description, ego$p.adjust))
 }
 
 DEBUG <- function() {
