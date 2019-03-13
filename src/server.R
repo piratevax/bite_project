@@ -87,10 +87,10 @@ shinyServer(function(session, input, output) {
   absoluteValue <- reactive({
     input$absoluteValue
   })
-  wdi.checkbox <- reactive({
+  wdi.output <- reactive({
     if (DEBUG.var)
-      cat(paste("#D# -> wdi.checkbox: ", input$checkboxWDI, "\n", sep =""))
-    input$checkboxWDI
+      cat(paste("#D# -> wdi.checkbox: ", input$WDIoutput, "\n", sep =""))
+    input$WDIoutput
   })
 
   wdi.log2FoldChange <- reactive({

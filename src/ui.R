@@ -71,9 +71,14 @@ ui <- fluidPage(
                  
                  tags$hr(),
                  
-                 checkboxGroupInput("checkboxWDI", "Output :",
-                                    c("Volcano plot"="volcano",
-                                      "MA plot"="MAplot")),
+                 radioButtons("WDIoutput", "Output :",
+                              choices = list("Volcano plot" = "volcano",
+                                             "MA plot" = "MAplot",
+                                             "Both" = "bothplot"
+                              ), 
+                              selected = "volcano"),
+                 
+
                  tags$hr(),
                  
                  div(style="display:inline-block",
