@@ -16,6 +16,7 @@
         #               "bonferonni", "BH"
         #
         # Returns:
+        #   list:
         #   (dataframe) list of significantly enriched domains
         #   (plot) plot of top 10 significantly enriched domains
         
