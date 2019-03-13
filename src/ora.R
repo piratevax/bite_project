@@ -21,11 +21,11 @@
         
 
 # Chargement des bibliothèques
-require(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
-require(dplyr)                                                                  # manipulation données
-require(DescTools)                                                              # g-test
-require(PFAM.db)                                                                # conversion ID Pfam
-require(ggplot2)
+library(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
+library(dplyr)                                                                  # manipulation données
+library(DescTools)                                                              # g-test
+library(PFAM.db)                                                                # conversion ID Pfam
+library(ggplot2)
 
 ################################ MAIN FUNCTION ################################
 
@@ -159,6 +159,8 @@ RunTest <-
     success.in.sample <- contingency.table[1, 1]
     sample.size <- sum(contingency.table[, 1])
     success.in.population <- sum(contingency.table[1, ])
+    jaccard.index <-
+      success.in.sample / (sample.size + success.in.population - success.in.sample)
     alt <- "two.sided"
     if (enrichment == "over") {
       low.tail <- F
@@ -181,6 +183,9 @@ RunTest <-
       p.value <- test.results$p.value
     } else if (test == "hypergeometric") {
       failure.in.population <- sum(contingency.table[2, ])
+      if (enrichment == "over") {
+        success.in.sample <- success.in.sample - 1
+      }
       p.value <-
         phyper(
           success.in.sample,
@@ -189,6 +194,7 @@ RunTest <-
           sample.size,
           lower.tail = low.tail
         )
+      }
     } else if (test == "binomial") {
       succes.out.sample <- contingency.table[1, 2]
       out.sample.size <- sum(contingency.table[, 2])
@@ -204,8 +210,6 @@ RunTest <-
     } else {
       stop("Misspecified statistical test!")
     }
-    jaccard.index <-
-      success.in.sample / (sample.size + success.in.population - success.in.sample)
     metrics <-
       list(
         "ID" = rownames(contingency.table)[1],
