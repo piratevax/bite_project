@@ -5,7 +5,11 @@ BITE Analysis Shiny app that provides a graphical interface to perform enrichmen
 Bioinformatics Interactive Toolbox for Enrichment analysis, or BITE Analysis, is developed as an assignment in the 'Bioinformatics in omic sciences : genomic and transcriptomic analysis' subject area. This is a subject of the Master's degree in Bioinformatics, statistics and modeling done at the Rouen-Normandie University, France.
 
 # Summary
+[Overview](https://github.com/piratevax/bite_project#overview)
 [Input files](https://github.com/piratevax/bite_project#input-files)
+[Parameters](https://github.com/piratevax/bite_project#parameters)
+[Output](https://github.com/piratevax/bite_project#output)
+[Packages used and dependancies](https://github.com/piratevax/bite_project#packages-used-and-dependancies)
 
 # Overview
 
