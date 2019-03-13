@@ -70,7 +70,8 @@ getSignificativeGene <- function(x, alpha = 0.05, l2FC = 0, absolute = TRUE) {
   }
 }
 
-gseaGO <- function(geneList, background, alpha = 0.05, ont, adjustMethod = "ALL") {
+gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH") {
+  geneList <- sort(as.numeric(bitr(geneList, fromType = "SYMBOL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")[,2]), decreasing = TRUE)
   ego <- gseGO(geneList = geneList,
     OrgDb = org.Hs.eg.db,
     ont = ont, # one of "BP", "MF", "CC" or "ALL"
@@ -79,7 +80,15 @@ gseaGO <- function(geneList, background, alpha = 0.05, ont, adjustMethod = "ALL"
     maxGSSize = 500,
     pAdjustMethod = adjustMethod,
     pvalueCutoff = alpha)
-  return(ego)#list(ego$ID, ego$Description, ego$p.adjust))
+  return(ego)#list(ego$ID, ego$Description, ego$p.adjust))sapply(ego3$ID, GOLink)
+}
+
+GOLink <- function(x) {
+  return(paste("<a href='http://amigo.geneontology.org/amigo/term/", x, "'>", x, "</a>", sep = ""))
+}
+
+GOList <- function(x) {
+  return(list("ID"=as.vector(sapply(x$ID, GOLink)), "Description"=x$Description, "p.adjust"=x$p.adjust))
 }
 
 DEBUG <- function() {
@@ -90,6 +99,8 @@ DEBUG <- function() {
   getFilteredSet(read, pvalFilter, l2FC)
   generateVolcanoPlot(read, l2FC = l2FC)
   generateMAPlot(read, l2FC = l2FC)
+  
+  sort(as.numeric(bitr(as.vector(read[,1]), fromType = "SYMBOL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")[,2]), decreasing = TRUE)
 }
 
 #DEBUG()
