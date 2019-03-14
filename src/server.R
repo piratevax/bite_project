@@ -95,7 +95,7 @@ shinyServer(function(session, input, output) {
         if (DEBUG.var)
           cat(paste("#D# pval: ", typeof(rv$pvalue), "\n", sep = ""))
         if (DEBUG.var)
-          cat(paste("#D# GOE ontology:\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, "\n", sep = ""))
+          cat(paste("#D# GOE ontology:\n\tall", rv$allGO, "\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, "\n", sep = ""))
         if (rv$allGO) {
           rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism), rv$pvalue, organism =  rv$organism)
         } else {
@@ -116,6 +116,10 @@ shinyServer(function(session, input, output) {
         # }
         output$tableGOE <- DT::renderDataTable({
           GOList(rv$gseaGO)
+        })
+        rv$plotGOE <- dotplot(rv$gseaGO)
+        output$plotGO <- renderPlot({
+          rv$plotGOE
         })
       }
       
@@ -216,19 +220,27 @@ shinyServer(function(session, input, output) {
       rv$statisticalMethod <- goe.enrichmentAnalysis()
       
       tmp <- goe.checkbox()
-      for (i in tmp) {
-        if (i == "MF") rv$MF <- TRUE
-        if (i == "CC") rv$CC <- TRUE
-        if (i == "BP") rv$BP <- TRUE
-      }
-      if (rv$MF && rv$CC && rv$BP) rv$allGO = TRUE
-      if (rv$allGO) {
+      if (tmp == "all") {
+        rv$allGO <- TRUE
         rv$queue <- c(rv$queue, list("GOE", "all"))
-      } else {
-        if (rv$MF) rv$queue <- c(rv$queue, list("GOE", "MF"))
-        if (rv$CC) rv$queue <- c(rv$queue, list("GOE", "CC"))
-        if (rv$BP) rv$queue <- c(rv$queue, list("GOE", "BP"))
+      } else if (tmp == "MF") {
+        rv$MF <- TRUE
+        rv$queue <- c(rv$queue, list("GOE", "MF"))
+      } else if (tmp == "CC") {
+        rv$CC <- TRUE
+        rv$queue <- c(rv$queue, list("GOE", "CC"))
+      } else if (tmp == "BP") {
+        rv$BP <- TRUE
+        rv$queue <- c(rv$queue, list("GOE", "BP"))
       }
+      # if (rv$MF && rv$CC && rv$BP) rv$allGO = TRUE
+      # if (rv$allGO) {
+      #   rv$queue <- c(rv$queue, list("GOE", "all"))
+      # } else {
+      #   if (rv$MF) rv$queue <- c(rv$queue, list("GOE", "MF"))
+      #   if (rv$CC) rv$queue <- c(rv$queue, list("GOE", "CC"))
+      #   if (rv$BP) rv$queue <- c(rv$queue, list("GOE", "BP"))
+      # }
       tmp <- length(rv$queue) / 2
       if (tmp != rv$queue.lastSize) {
         rv$queue.lastSize <- tmp
@@ -277,4 +289,16 @@ shinyServer(function(session, input, output) {
     input$methodProtein
   })
   
+  observeEvent(
+    input$submitProtein, {
+      
+      tmp <- length(rv$queue) / 2
+      if (tmp != rv$queue.lastSize) {
+        rv$queue.lastSize <- tmp
+        output$queue <- DT::renderDataTable({
+          `colnames<-`(matrix(cbind(rv$queue), ncol = 2, byrow = T), c("tab", "job"))
+        })
+      }
+    }
+  )
 })

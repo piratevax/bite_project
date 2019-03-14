@@ -123,8 +123,9 @@ ui <- fluidPage(
                                           "autre"="autre banque ?"
                              )),
                  tags$hr(),
-                 checkboxGroupInput("checkboxGOE", "GO term ontology :",
-                                    c("Molecular function"="MF",
+                 radioButtons("checkboxGOE", "GO term ontology :",
+                              choices = list("All"="all",
+                                      "Molecular function"="MF",
                                       "Cellular component"="CC",
                                       "Biological process"="BP")),
                  tags$hr(),
@@ -144,7 +145,10 @@ ui <- fluidPage(
                  actionButton("submitGOE", "Submit"),
                  
                  tags$hr(),
-                 tabPanel("Raw data", DT::dataTableOutput("tableGOE"))
+                 tabPanel("Raw data", DT::dataTableOutput("tableGOE")),
+                 
+                 tags$hr(),
+                 plotOutput("plotGO")
         ),
         
         
