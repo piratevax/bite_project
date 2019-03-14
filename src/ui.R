@@ -14,6 +14,7 @@ require(shiny)
 require(shinythemes)
 require(DT)
 source("some_functions.R")
+source("ora.R")
 
 # Define UI for data upload app ----
 ui <- fluidPage( 
@@ -41,7 +42,7 @@ ui <- fluidPage(
       radioButtons("IDsource", "ID gene source",
                    choices = list("GeneNCBI" = "ncbi",
                                   "Ensembl" = "ensembl"),
-                   selected = "ensembl"),
+                   selected = 2),
       
       # Horizontal line ----
       tags$hr(),
@@ -101,13 +102,14 @@ ui <- fluidPage(
                               selected = 1),
                  actionButton("submitWDI", "Submit"),
                  
+                 actionButton("resetWDI", "Reset"),
                  tags$hr(),
                  plotOutput("plotVulcanoPlot"),
                  
                  tags$hr(),
                  plotOutput("plotMAPlot"),
-                 
                  tags$hr(),
+                 
                  tabPanel("Raw data", DT::dataTableOutput("tableWDI"))
         ),
         
@@ -120,31 +122,25 @@ ui <- fluidPage(
                              )),
                  tags$hr(),
                  checkboxGroupInput("checkboxGOE", "GO term ontology :",
-                                    c("Molecular function"="MF",
-                                      "Cellular component"="CC",
-                                      "Biological process"="BP")),
+                                    c("Molecular function"="F",
+                                      "Cellular component"="C",
+                                      "Biological process"="P")),
                  tags$hr(),
                  radioButtons("enrichmentAlgorithmGOE", "Enrichment algorithm :",
                               choices = list("SEA" = "sea",
                                              "GSEA" = "gsea"
                               ), 
-                              selected = "gsea"),
+                              selected = "sea"),
                  tags$hr(),
                  radioButtons("methodGOE", "Statistical methods :",
-                              choiceNames = list(HTML("&chi;<sup>2</sup>-test"),#"X??-test" = "chi",
-                                             "Fisher's exact test",
-                                             "Binomial test",
-                                             "Hypergeometric test"),
-                              choiceValues = list("chi",#"X??-test" = "chi",
-                                                  "fisher",
-                                                  "binom",
-                                                  "hypergeo"),
+                              choices = list("chi-test" = "chi",
+                                             "Fisher's exact test" = "fisher",
+                                             "Binomial test" = "binom",
+                                             "Hypergeometric test" = "hypergeo"), 
                               selected = "chi"),
                  tags$hr(),
-                 actionButton("submitGOE", "Submit"),
+                 actionButton("submitGOE", "Submit")
                  
-                 tags$hr(),
-                 tabPanel("GO analysis", DT::dataTableOutput("tableGOE"))
         ),
         
         
@@ -160,15 +156,11 @@ ui <- fluidPage(
                               ), 
                               selected = "sea"),
                  tags$hr(),
-                 radioButtons("methodGOE", "Statistical methods :",
-                              choiceNames = list(HTML("&chi;<sup>2</sup>-test"),#"X??-test" = "chi",
-                                                 "Fisher's exact test",
-                                                 "Binomial test",
-                                                 "Hypergeometric test"),
-                              choiceValues = list("chi",#"X??-test" = "chi",
-                                                  "fisher",
-                                                  "binom",
-                                                  "hypergeo"),
+                 radioButtons("methodPathway", "Statistical methods :",
+                              choices = list("chi-test" = "chi",
+                                             "Fisher's exact test" = "fisher",
+                                             "Binomial test" = "binom",
+                                             "Hypergeometric test" = "hypergeo"), 
                               selected = "chi"),
                  tags$hr(),
                  actionButton("submitPathway", "Submit")
@@ -188,17 +180,12 @@ ui <- fluidPage(
                               selected = "sea"),
                  tags$hr(),
                  
-                 radioButtons("methodGOE", "Statistical methods :",
-                              choiceNames = list(HTML("&chi;<sup>2</sup>-test"),#"X??-test" = "chi",
-                                                 "Fisher's exact test",
-                                                 "Binomial test",
-                                                 "G-test",
-                                                 "Hypergeometric test"),
-                              choiceValues = list("chi",#"X??-test" = "chi",
-                                                  "fisher",
-                                                  "binom",
-                                                  "gtest",
-                                                  "hypergeo"),
+                 radioButtons("methodProtein", "Statistical methods :",
+                              choices = list("chi-test" = "chi",
+                                             "Fisher's exact test" = "fisher",
+                                             "Binomial test" = "binom",
+                                             "G-test" = "gtest",
+                                             "Hypergeometric test" = "hypergeo"), 
                               selected = "chi"),
                  
                  radioButtons("updownProteinDomain", "Regulated genes:",
@@ -206,6 +193,7 @@ ui <- fluidPage(
                                              "Down" = "down",
                                              "Both" = "both")),
                  actionButton("submitProtein", "Submit"),
+                 
                  tags$hr()
                  
                  
