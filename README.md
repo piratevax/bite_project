@@ -28,7 +28,7 @@ Input format is either .csv or .tsv
 
 ## Content
 Input file must containt, *in that particular order*
-* Gene ID
+* Gene ID either an Ensembl or a NCBI ID
 * Base mean (average read count)
 * Log2 of the Fold Change (log2 of ratio between condition A and B)
 * Adjusted p-value
