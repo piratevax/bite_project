@@ -108,8 +108,8 @@ ui <- fluidPage(
                  
                  tags$hr(),
                  plotOutput("plotMAPlot"),
-                 tags$hr(),
                  
+                 tags$hr(),
                  tabPanel("Raw data", DT::dataTableOutput("tableWDI"))
         ),
         
@@ -122,9 +122,9 @@ ui <- fluidPage(
                              )),
                  tags$hr(),
                  checkboxGroupInput("checkboxGOE", "GO term ontology :",
-                                    c("Molecular function"="F",
-                                      "Cellular component"="C",
-                                      "Biological process"="P")),
+                                    c("Molecular function"="MF",
+                                      "Cellular component"="CC",
+                                      "Biological process"="BP")),
                  tags$hr(),
                  radioButtons("enrichmentAlgorithmGOE", "Enrichment algorithm :",
                               choices = list("SEA" = "sea",
@@ -139,8 +139,10 @@ ui <- fluidPage(
                                              "Hypergeometric test" = "hypergeo"), 
                               selected = "chi"),
                  tags$hr(),
-                 actionButton("submitGOE", "Submit")
+                 actionButton("submitGOE", "Submit"),
                  
+                 tags$hr(),
+                 tabPanel("Raw data", DT::dataTableOutput("tableGOE"))
         ),
         
         
