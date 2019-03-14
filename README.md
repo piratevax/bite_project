@@ -102,6 +102,9 @@ F\**k that s\**t.
 ### Language !
 That's not a question.
 
+### My rabbit is getting agressive towards knights, what do I do ?
+Do you have a Saint Grenade of Antioch ? Otherwise run.
+
 ### Third favorite dinosaur ?
 Triceratops.
 
