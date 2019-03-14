@@ -42,6 +42,7 @@ ui <- fluidPage(
       radioButtons("IDsource", "ID gene source",
                    choices = list("GeneNCBI" = "ncbi",
                                   "Ensembl" = "ensembl"),
+                   
                    selected = "ensembl"),
       
       # Horizontal line ----
@@ -50,8 +51,13 @@ ui <- fluidPage(
                   #choices = getBiomartDataset()),
                   choices = list("hsapiens"="hsapiens",
                                  "mmusculus"="mmusculus")),
-      tags$hr(),
       
+      tags$hr(),
+      sliderInput("pvalue", "p-value:",
+                  min = 0, max = 0.1,
+                  value = 0.05, step = 0.01),
+      
+      tags$hr(),
       tabsetPanel(
         id = 'queue',
         tabPanel("Submitted jobs", DT::dataTableOutput("queue"))
@@ -90,10 +96,6 @@ ui <- fluidPage(
                      checkboxInput("absoluteValue", "Absolute value", FALSE)
                  ),
                  
-                 tags$hr(),
-                 sliderInput("pvalue", "p-value:",
-                             min = 0, max = 0.1,
-                             value = 0.05, step = 0.01),
                  tags$hr(),
                  radioButtons("Am", "Adjustment method:",
                               choices = list("Bonferroni" = "bonf",
