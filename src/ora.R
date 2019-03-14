@@ -21,72 +21,13 @@
         #   (plot) plot of top 10 significantly enriched domains
         
 
+
 # Chargement des bibliothèques
-library(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
-library(dplyr)                                                                  # manipulation données
-library(DescTools)                                                              # g-test
-library(PFAM.db)                                                                # conversion ID Pfam
-library(ggplot2)
-
-################################ MAIN FUNCTION ################################
-
-ORA <- function (gene.set,
-                 database = "interpro",
-                 species = "hsapiens",
-                 test = "g-test",
-                 enrichment = "both",
-                 threshold = 0.05,
-                 correction = "BH")
-{
-  background <- GetBackgroundGenes(database, species)
-  annotated.gene.set <-
-    filter(background, ensembl_gene_id %in% gene.set)
-  filtered.background <-
-    filter(background, !ensembl_gene_id %in% gene.set)
-  domains <- unique(annotated.gene.set[database][, 1])
-  contingency.tables <-
-    lapply(domains,
-           GenerateContingencyTables,
-           gene.set = annotated.gene.set,
-           background = filtered.background)
-  over.or.underrepresented <-
-    lapply(contingency.tables,
-           RunTest,
-           test = test,
-           enrichment = enrichment)
-  col.names <- c("ID", "gene count (set)", "gene count (background)", "jaccard", "p-value")
-  tmp <- as.data.frame(over.or.underrepresented, stringsAsFactors = F)
-  tmp2 <- matrix(tmp[1,], ncol = 5, byrow = T)
-  metrics <- as.data.frame(tmp2, col.names = col.names)
-  colnames(metrics) <- col.names
-  enriched <-
-    CorrectAndSelect(metrics, correction)
-  complete.output <- FromIDtoName(enriched, database, species)
-  ordered.list <- complete.output[order(complete.output[7], decreasing = T),]
-  rownames(ordered.list) <- 1:nrow(ordered.list)
-  
-  if (enrichment == "both") {
-    plot.title = ggtitle("Top 10 over/underrepresented protein domains")
-  } else if (enrichment == "over") {
-    plot.title = ggtitle("Top 10 overrepresented protein domains")
-  } else if (enrichment == "under") {
-    plot.title = ggtitle("Top 10 underrepresented protein domains")
-  }
-  
-  bar.plot <-
-    ggplot(ordered.list[1:10, ], aes(
-      x = reorder(ordered.list[1:10, 2],-log10(ordered.list[1:10, 7])),
-      y = -log10(ordered.list[1:10, 7])
-    )) +
-    ggtitle("Top 10 over/underrepresented protein domains") +
-    ylab("- log10 (adjusted p-value)") + xlab("") +
-    geom_bar(stat = 'identity') +
-    coord_flip()
-  
-  return(list("table" = complete.output, "graph" = bar.plot))
-}
-
-################################################################################
+require(biomaRt)                                                                # requêtes Ensembl + conversion ID Interpro
+require(dplyr)                                                                  # manipulation données
+require(DescTools)                                                              # g-test
+require(PFAM.db)                                                                # conversion ID Pfam
+require(ggplot2)
 
 GetBackgroundGenes <-
   function (database = "pfam", species = "hsapiens") {
@@ -119,7 +60,7 @@ GetBackgroundGenes <-
       )
     not.annotated <-
       which(background.genes[database] == "")                                   # TODO: find a way to generalize to all empty cases (NA, NULL)
-    background.genes <- background.genes[-not.annotated,]
+    background.genes <- background.genes[-not.annotated, ]
     
     return(background.genes)
   }
@@ -159,7 +100,7 @@ RunTest <-
             enrichment = "over") {
     success.in.sample <- contingency.table[1, 1]
     sample.size <- sum(contingency.table[, 1])
-    success.in.population <- sum(contingency.table[1, ])
+    success.in.population <- sum(contingency.table[1,])
     jaccard.index <-
       success.in.sample / (sample.size + success.in.population - success.in.sample)
     alt <- "two.sided"
@@ -183,7 +124,7 @@ RunTest <-
                     alternative = alt)
       p.value <- test.results$p.value
     } else if (test == "hypergeometric") {
-      failure.in.population <- sum(contingency.table[2, ])
+      failure.in.population <- sum(contingency.table[2,])
       if (enrichment == "over") {
         success.in.sample <- success.in.sample - 1
       }
@@ -195,38 +136,38 @@ RunTest <-
           sample.size,
           lower.tail = low.tail
         )
-      }
-     else if (test == "binomial") {
-      succes.out.sample <- contingency.table[1, 2]
-      out.sample.size <- sum(contingency.table[, 2])
-      test.results <-
-        binom.test(
-          success.in.sample,
-          sample.size,
-          p = succes.out.sample / out.sample.size,
-          conf.level = 1 - threshold,
-          alternative = alt
-        )
-      p.value <- test.results$p.value
-    } else {
-      stop("Misspecified statistical test!")
     }
-    metrics <-
-      list(
-        "ID" = rownames(contingency.table)[1],
-        "gene count (set)" = contingency.table[1, 1],
-        "gene count (background)" = contingency.table[1, 2],
-        "jaccard" = jaccard.index,
-        "p-value" = p.value
+  } else if (test == "binomial") {
+    succes.out.sample <- contingency.table[1, 2]
+    out.sample.size <- sum(contingency.table[, 2])
+    test.results <-
+      binom.test(
+        success.in.sample,
+        sample.size,
+        p = succes.out.sample / out.sample.size,
+        conf.level = 1 - threshold,
+        alternative = alt
       )
-    return(metrics)
+    p.value <- test.results$p.value
+  } else {
+    stop("Misspecified statistical test!")
   }
+metrics <-
+  list(
+    "ID" = rownames(contingency.table)[1],
+    "gene count (set)" = contingency.table[1, 1],
+    "gene count (background)" = contingency.table[1, 2],
+    "jaccard" = jaccard.index,
+    "p-value" = p.value
+  )
+return(metrics)
+}
 
 CorrectAndSelect <- function (metrics, correction) {
   metrics[, 6] <- p.adjust(metrics$`p-value`, method = correction)
   colnames(metrics)[6] <- "adjusted p-value"
   keep <- which(metrics$`adjusted p-value` < threshold)
-  selected.terms <- metrics[keep, ]
+  selected.terms <- metrics[keep,]
   rownames(selected.terms) <- 1:nrow(selected.terms)
   
   return(selected.terms)
@@ -265,3 +206,80 @@ FromIDtoName <-
     
     return(complete.list)
   }
+
+################################ MAIN FUNCTION ################################
+
+ORA <- function (gene.set,
+                 id.source = "ensembl",
+                 database = "interpro",
+                 species = "hsapiens",
+                 test = "g-test",
+                 enrichment = "both",
+                 threshold = 0.05,
+                 correction = "BH")
+{
+  if (id.source == "ncbi") {
+    species.dataset <- paste0(species, "_gene_ensembl")
+    ensembl <-
+      useMart(biomart = "ensembl", dataset = species.dataset)
+    id.conversion <- getBM(
+      attributes = "ensembl_gene_id",
+      filters = "entrezgene",
+      values = gene.set,
+      mart = ensembl
+    )
+  }
+  background <- GetBackgroundGenes(database, species)
+  annotated.gene.set <-
+    filter(background, ensembl_gene_id %in% gene.set)
+  filtered.background <-
+    filter(background,!ensembl_gene_id %in% gene.set)
+  domains <- unique(annotated.gene.set[database][, 1])
+  contingency.tables <-
+    lapply(domains,
+           GenerateContingencyTables,
+           gene.set = annotated.gene.set,
+           background = filtered.background)
+  over.or.underrepresented <-
+    lapply(contingency.tables,
+           RunTest,
+           test = test,
+           enrichment = enrichment)
+  col.names <-
+    c("ID",
+      "gene count (set)",
+      "gene count (background)",
+      "jaccard",
+      "p-value")
+  tmp <-
+    as.data.frame(over.or.underrepresented, stringsAsFactors = F)
+  tmp2 <- matrix(tmp[1, ], ncol = 5, byrow = T)
+  metrics <- as.data.frame(tmp2, col.names = col.names)
+  colnames(metrics) <- col.names
+  enriched <-
+    CorrectAndSelect(metrics, correction)
+  complete.output <- FromIDtoName(enriched, database, species)
+  ordered.list <-
+    complete.output[order(complete.output[7], decreasing = T), ]
+  rownames(ordered.list) <- 1:nrow(ordered.list)
+  
+  if (enrichment == "both") {
+    plot.title = ggtitle("Top 10 over/underrepresented protein domains")
+  } else if (enrichment == "over") {
+    plot.title = ggtitle("Top 10 overrepresented protein domains")
+  } else if (enrichment == "under") {
+    plot.title = ggtitle("Top 10 underrepresented protein domains")
+  }
+  
+  bar.plot <-
+    ggplot(ordered.list[1:10,], aes(
+      x = reorder(ordered.list[1:10, 2], -log10(ordered.list[1:10, 7])),
+      y = -log10(ordered.list[1:10, 7])
+    )) +
+    ggtitle("Top 10 over/underrepresented protein domains") +
+    ylab("- log10 (adjusted p-value)") + xlab("") +
+    geom_bar(stat = 'identity') +
+    coord_flip()
+  
+  return(list("table" = complete.output, "graph" = bar.plot))
+}
