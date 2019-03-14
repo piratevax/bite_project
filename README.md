@@ -88,6 +88,7 @@ GO terms enrichement analysis results ni a \[A voir avec Xavier\]
 
 # Packages used and dependencies
 
+### Main packages
 pathview_1.22.3
 
 PFAM.db_3.7.0
@@ -122,7 +123,9 @@ DT_0.5
 
 shinythemes_1.1.2
 
-shiny_1.2.0         
+shiny_1.2.0
+
+### Main packages dependencies
 
 fgsea_1.8.0
 
