@@ -64,6 +64,9 @@ shinyServer(function(session, input, output) {
         if (DEBUG.var)
           cat(paste("#D# -> ", rv$null, "\n"), sep = "")
       }
+      rv$organism <- organismSelected()
+      if(DEBUG.var)
+        cat(paste("#D# -> rv$organism", rv$organism, "\n"), sep = "")
       
       ### WDI
       if (DEBUG.var)
@@ -92,14 +95,14 @@ shinyServer(function(session, input, output) {
         if (DEBUG.var)
           cat(paste("#D# GOE ontology:\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, sep = ""))
         if (rv$allGO) {
-          rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue)
+          rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, rv$organism)
         } else {
           if (rv$MF) {
-            rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, ont = "MF")
+            rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "MF", organism = rv$organism)
           } else if (rv$CC) {
-            rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, ont = "CC")
+            rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "CC", organism =rv$organism)
           } else if (rv$BP) {
-            rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, ont = "BP")
+            rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "BP", organism = rv$organism)
           }
         }
         output$tableGOE <- DT::renderDataTable({
@@ -142,7 +145,6 @@ shinyServer(function(session, input, output) {
       updateSliderInput(session, "lFC", min = -10)
   })
   
-  ### TODO : prendre en compte pval et lfc
   observeEvent(
     input$submitWDI, {
       rv$volcanoPlot <- FALSE
@@ -240,6 +242,19 @@ shinyServer(function(session, input, output) {
     input$methodPathway
   })
   
+  observeEvent(
+    input$submitProtein, {
+      rv$pathway = TRUE
+      
+      tmp <- length(rv$queue) / 2
+      if (tmp != rv$queue.lastSize) {
+        rv$queue.lastSize <- tmp
+        output$queue <- DT::renderDataTable({
+          `colnames<-`(matrix(cbind(rv$queue), ncol = 2, byrow = T), c("tab", "job"))
+        })
+      }
+    }
+  )
   
   #### Protein Domain ####
   rv$protein <- FALSE
