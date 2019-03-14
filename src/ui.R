@@ -147,7 +147,7 @@ ui <- fluidPage(
                  actionButton("submitGOE", "Submit"),
                  
                  tags$hr(),
-                 tabPanel("Raw data", DT::dataTableOutput("tableGOE")),
+                 tabPanel("Table GO", DT::dataTableOutput("tableGOE")),
                  
                  tags$hr(),
                  plotOutput("plotGO")
@@ -172,8 +172,13 @@ ui <- fluidPage(
                               ), 
                               selected = "BH"),
                  tags$hr(),
-                 actionButton("submitPathway", "Submit")
+                 actionButton("submitPathway", "Submit"),
                  
+                 tags$hr(),
+                 tabPanel("Table Pathway", DT::dataTableOutput("tablePathway")),
+                 
+                 tags$hr(),
+                 plotOutput("plotGO")
         ),
         
         
