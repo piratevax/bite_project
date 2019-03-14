@@ -342,7 +342,7 @@ ggplotify_0.0.3
 [Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Troobleshooting and FAQ
-SInce no user have reported any kind of problem with the app, I'll go straight to the FAQ.
+Since no user have reported any kind of problem with the app, I'll go straight to the FAQ.
 
 ### How are you ?
 Fine, thanks.
