@@ -40,11 +40,13 @@ Input file must containt, *in that particular order*
   * Fisher test
   * Binomial test
   * Hypergeometric test
+* p-value adjustment
+  * Bonferroni
+  * Benjamini-Hochberg
   
 ## Data inspection
 Cutoffs for log2 Fold-change and p-value can be applied
 
-Bonferroni and Benjamini-Hochberg adjustments can also be aplied to p-value
 
 ## GO terms
 All three levels of the Gene Ontology can be investigated using the following databases :
