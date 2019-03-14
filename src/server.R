@@ -28,7 +28,7 @@ shinyServer(function(session, input, output) {
   rv$queue.lastSize <- 0
   
   #### Sidebar #####
-  file1 <- reactive({
+  file <- reactive({
     if (!is.null(input$file1)) {
       # validate(
       #   need(!is.null(input$file1), rv$null)
@@ -52,7 +52,7 @@ shinyServer(function(session, input, output) {
   
   observeEvent(
     input$goButton, {
-      rv$read <- file1()
+      rv$read <- file()
       if (DEBUG.var)
         cat(paste("#D# -> ", rv$read, "\n", sep = ""))
       rv$organismSelected <- organismSelected()
@@ -93,17 +93,25 @@ shinyServer(function(session, input, output) {
         cat(paste("#D# rv$goe: ", rv$goe, "\n", sep = ""))
       if (rv$goe) {
         if (DEBUG.var)
-          cat(paste("#D# GOE ontology:\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, sep = ""))
-        if (rv$allGO) {
-          rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, rv$organism)
-        } else {
-          if (rv$MF) {
-            rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "MF", organism = rv$organism)
-          } else if (rv$CC) {
-            rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "CC", organism =rv$organism)
-          } else if (rv$BP) {
-            rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "BP", organism = rv$organism)
-          }
+          cat(paste("#D# GOE ontology:\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, "\n", sep = ""))
+        # if (rv$allGO) {
+        #   rv$gseaGO <- gseaGO(as.vector(rv$read[,1]), rv$pvalue, rv$organism)
+        # } else {
+        #   if (rv$MF) {
+        #     rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "MF", organism = rv$organism)
+        #   } else if (rv$CC) {
+        #     rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "CC", organism =rv$organism)
+        #   } else if (rv$BP) {
+        #     rv$gseaGO <- gseaGO(rv$read, rv$pvalue, ont = "BP", organism = rv$organism)
+        #   }
+        # }
+        cat(paste("#D# pval: ", typeof(rv$pvalue), "\n", sep = ""))
+        if (rv$MF) {
+          rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue, ont = "MF", organism = rv$organism)
+        } else if (rv$CC) {
+          rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue, ont = "CC", organism =rv$organism)
+        } else if (rv$BP) {
+          rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue, ont = "BP", organism = rv$organism)
         }
         output$tableGOE <- DT::renderDataTable({
           GOList(rv$gseaGO)
