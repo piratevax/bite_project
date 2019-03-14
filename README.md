@@ -99,8 +99,17 @@ II, I, VII IV, VI, VII, III, V.
 ### How do you think you handled that project ?
 F\**k that s\**t.
 
+### Language !
+That's not a question.
+
 ### Third favorite dinosaur ?
 Triceratops.
 
 ### 5 341 325 x 15 132 ?
 80 824 929 900.
+
+### Who's the best in the team ?
+You are. <3
+
+### Next project ?
+Don't know yet but f\**k that s\**t too.
