@@ -97,7 +97,7 @@ As of right now, only the human genome and the mouse genome are supported, and i
 II, I, VII IV, VI, VII, III, V.
 
 ### How do you think you handled that project ?
-F**k that s**t.
+F\**k that s\**t.
 
 ### Third favorite dinosaur ?
 Triceratops.
