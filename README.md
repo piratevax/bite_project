@@ -41,8 +41,8 @@ Input file must containt, *in that particular order*
   * Binomial test
   * Hypergeometric test
 * p-value adjustment
- * Bonferroni
- * Benjamini-Hochberg
+  * Bonferroni
+  * Benjamini-Hochberg
   
 ## Data inspection
 Cutoffs for log2 Fold-change and p-value can be applied
