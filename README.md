@@ -27,6 +27,7 @@ Bioinformatics Interactive Toolbox for Enrichment analysis, or BITE Analysis, is
 * Add the analysis to the queue using the 'Submit' button
 * Release the queue using the 'GO' button on the sidebar
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Input files
 ## Format
@@ -72,6 +73,8 @@ Protein domains can be investigated using the following databases :
 * PFam
 * InterPro
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
+
 
 # Output
 ## Data inspection
@@ -85,6 +88,7 @@ GO terms enrichement analysis results ni a \[A voir avec Xavier\]
 
 ## Protein domains
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Packages used and dependencies
 
@@ -323,9 +327,9 @@ munsell_0.5.0
 
 viridisLite_0.3.0
 
-
 ggplotify_0.0.3
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Troobleshooting and FAQ
 SInce no user have reported any kind of problem with the app, I'll go straight to the FAQ.
@@ -359,3 +363,6 @@ You are. <3
 
 ### Next project ?
 Don't know yet but f\**k that s\**t too.
+
+### You're not that fun, can I go back up there ?
+[There you go](https://github.com/piratevax/bite_project#summary)
