@@ -83,4 +83,6 @@ GO terms enrichement analysis results ni a \[A voir avec Xavier\]
 # Packages used and dependencies
 \[Faire le session.info() en dernier, ajouter une courte description si possible]
 
-# Troobleshooting
+# Troobleshooting and FAQ
+## What are the species currently supported ?
+As of right now, only the human genome and the mouse genome are supported
