@@ -6,10 +6,15 @@ Bioinformatics Interactive Toolbox for Enrichment analysis, or BITE Analysis, is
 
 
 # Summary
+
 [Overview](https://github.com/piratevax/bite_project#overview)
+
 [Input files](https://github.com/piratevax/bite_project#input-files)
+
 [Parameters](https://github.com/piratevax/bite_project#parameters)
+
 [Output](https://github.com/piratevax/bite_project#output)
+
 [Packages used and dependencies](https://github.com/piratevax/bite_project#packages-used-and-dependencies)
 
 
