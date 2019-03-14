@@ -191,11 +191,11 @@ ui <- fluidPage(
                  tags$hr(),
                  
                  radioButtons("methodProtein", "Statistical methods :",
-                              choices = list("chi-test" = "chi",
+                              choices = list("chi-test" = "chi-squared",
                                              "Fisher's exact test" = "fisher",
-                                             "Binomial test" = "binom",
+                                             "Binomial test" = "binomial",
                                              "G-test" = "g-test",
-                                             "Hypergeometric test" = "hypergeo"), 
+                                             "Hypergeometric test" = "hypergeometric"), 
                               selected = "chi"),
                  
                  tags$hr(),
@@ -212,9 +212,11 @@ ui <- fluidPage(
                                              "Both" = "both")),
                  actionButton("submitProtein", "Submit"),
                  
-                 tags$hr()
+                 tags$hr(),
+                 tabPanel("Table of Protein domain", DT::dataTableOutput("tableProtein")),
                  
-                 
+                 tags$hr(),
+                 plotOutput("plotProtein")
                  
         )
         
