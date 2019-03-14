@@ -52,7 +52,7 @@ Input file must containt, *in that particular order*
   * SEA
 * Statistical test supported for all analyses
   * Chi-squared test
-  * Fisher test
+  * Fisher's exact test
   * G-test
   * Binomial test
   * Hypergeometric test
