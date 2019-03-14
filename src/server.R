@@ -114,13 +114,15 @@ shinyServer(function(session, input, output) {
         # } else if (rv$BP) {
         #   rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue, ont = "BP", organism = rv$organism)
         # }
-        output$tableGOE <- DT::renderDataTable({
-          GOList(rv$gseaGO)
-        })
-        rv$plotGOE <- dotplot(rv$gseaGO)
-        output$plotGO <- renderPlot({
-          rv$plotGOE
-        })
+        if (dim(rv$gesaGO )[1] > 0){
+          output$tableGOE <- DT::renderDataTable({
+            GOList(rv$gseaGO)
+          })
+          rv$plotGOE <- dotplot(rv$gseaGO)
+          output$plotGO <- renderPlot({
+            rv$plotGOE
+          })
+        }
       }
       
       rv$queue <- NULL
@@ -285,12 +287,17 @@ shinyServer(function(session, input, output) {
   protein.statisticalMethod <- reactive({
     input$methodProtein
   })
-  protein.updownProteinDomain <- reactive({
-    input$methodProtein
+  protein.upDownProteinDomain <- reactive({
+    input$updownProteinDomain
   })
   
   observeEvent(
     input$submitProtein, {
+      rv$protein <- TRUE
+      rv$EAProtein <- protein.enrichmentAnalysis()
+      rv$statMethodProtein <- protein.statisticalMethod()
+      rv$upDownProtein <- protein.upDownProteinDomain()
+      
       
       tmp <- length(rv$queue) / 2
       if (tmp != rv$queue.lastSize) {
