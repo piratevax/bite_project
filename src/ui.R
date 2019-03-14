@@ -166,12 +166,11 @@ ui <- fluidPage(
                               ), 
                               selected = "sea"),
                  tags$hr(),
-                 radioButtons("methodPathway", "Statistical methods :",
-                              choices = list("chi-test" = "chi",
-                                             "Fisher's exact test" = "fisher",
-                                             "Binomial test" = "binom",
-                                             "Hypergeometric test" = "hypergeo"), 
-                              selected = "chi"),
+                 radioButtons("AMGO", "Adjustment method:",
+                              choices = list("Bonferroni" = "bonferroni",
+                                             "Benjamini-Hochberg" = "BH"
+                              ), 
+                              selected = "BH"),
                  tags$hr(),
                  actionButton("submitPathway", "Submit")
                  
