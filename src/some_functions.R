@@ -100,7 +100,7 @@ gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH", org
   ego <- gseGO(geneList = geneList,
     OrgDb = orgDB,
     ont = ont, # one of "BP", "MF", "CC" or "ALL"
-    nPerm = 1000,
+    nPerm = 10000,
     minGSSize = 10,
     maxGSSize = 500,
     pAdjustMethod = adjustMethod,
@@ -149,7 +149,7 @@ gseaKegg <- function(geneList, alpha = 0.05, organism) {
   }
   kk <- gseKEGG(geneList     = geneList,
                  organism     = org,
-                 nPerm        = 1000,
+                 nPerm        = 10000,
                  minGSSize    = 120,
                  pvalueCutoff = alpha,
                  keyType = "uniprot",
