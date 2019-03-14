@@ -53,6 +53,7 @@ Input file must containt, *in that particular order*
 * Statistical test supported for all analyses
   * Chi-squared test
   * Fisher test
+  * G-test
   * Binomial test
   * Hypergeometric test
 * p-value adjustment
