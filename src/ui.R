@@ -47,7 +47,8 @@ ui <- fluidPage(
       tags$hr(),
       selectInput("db", "Species :",
                   #choices = getBiomartDataset()),
-                  choices = list("hsapiens"="hsapiens")),
+                  choices = list("hsapiens"="hsapiens",
+                                 "mmusculus"="mmusculus")),
       tags$hr(),
       
       tabsetPanel(
