@@ -130,6 +130,13 @@ shinyServer(function(session, input, output) {
       output$queue <- DT::renderDataTable({
         NULL
       })
+      
+      ### Pathway
+      
+      
+      ### Protein domain
+      
+      
     })
   
   
@@ -281,23 +288,30 @@ shinyServer(function(session, input, output) {
   
   #### Protein Domain ####
   rv$protein <- FALSE
-  protein.enrichmentAnalysis <- reactive({
+  protein.dbprotein <- reactive({
+    input$dbprotein
+  })
+  protein.enrichmentAlgorithmProtein <- reactive({
     input$enrichmentAlgorithmProtein
   })
   protein.statisticalMethod <- reactive({
     input$methodProtein
   })
-  protein.upDownProteinDomain <- reactive({
+  protein.updownProteinDomain <- reactive({
     input$updownProteinDomain
+  })
+  protein.AMprotein <- reactive({
+    input$AMprotein
   })
   
   observeEvent(
     input$submitProtein, {
       rv$protein <- TRUE
-      rv$EAProtein <- protein.enrichmentAnalysis()
-      rv$statMethodProtein <- protein.statisticalMethod()
-      rv$upDownProtein <- protein.upDownProteinDomain()
-      
+      rv$dbprotein <- protein.dbprotein()
+      rv$enrichmentAlgorithmProtein <- protein.enrichmentAlgorithmProtein()
+      rv$statisticalMethod <- protein.methodProtein()
+      rv$updownProteinDomain <- protein.updownProteinDomain()
+      rv$AMprotein <- protein.AMprotein()
       
       tmp <- length(rv$queue) / 2
       if (tmp != rv$queue.lastSize) {

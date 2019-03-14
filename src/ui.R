@@ -65,6 +65,9 @@ ui <- fluidPage(
       
       
       actionButton("goButton", "GO !"),
+      
+      actionButton("resetButton", "Reset"),
+      
       singleton(
         tags$head(tags$script(src = "message-handler.js"))
       )
@@ -97,14 +100,13 @@ ui <- fluidPage(
                  ),
                  
                  tags$hr(),
-                 radioButtons("Am", "Adjustment method:",
-                              choices = list("Bonferroni" = "bonf",
-                                             "Benjamini-Hochberg" = "benja"
-                              ), 
-                              selected = 1),
+                 # radioButtons("Am", "Adjustment method:",
+                 #              choices = list("Bonferroni" = "bonf",
+                 #                             "Benjamini-Hochberg" = "benja"
+                 #              ), 
+                 #              selected = 1),
                  actionButton("submitWDI", "Submit"),
                  
-                 actionButton("resetWDI", "Reset"),
                  tags$hr(),
                  plotOutput("plotVulcanoPlot"),
                  
@@ -118,11 +120,11 @@ ui <- fluidPage(
         tabPanel("GO-Enrichment",
                  #textInput("database", label = h3("Database"), value = "Enter database..."),
                  #tags$hr(),
-                 selectInput("dbGOE", "Database :", 
-                             choices=list("GO"="GO",
-                                          "autre"="autre banque ?"
-                             )),
-                 tags$hr(),
+                 # selectInput("dbGOE", "Database :", 
+                 #             choices=list("GO"="GO",
+                 #                          "autre"="autre banque ?"
+                 #             )),
+                 # tags$hr(),
                  radioButtons("checkboxGOE", "GO term ontology :",
                               choices = list("All"="all",
                                       "Molecular function"="MF",
@@ -177,10 +179,10 @@ ui <- fluidPage(
         
         
         tabPanel("Protein domains",
-                 #selectInput("db", "Database :", 
-                 #           choices=list("GO"="GO",
-                 #                          "autre"="autre banque ?"
-                 #            )),
+                 selectInput("dbprotein", "Database :", 
+                             choices=list("PFAM"="pfam",
+                                          "Interpro"="interpro"
+                             )),
                  tags$hr(),
                  radioButtons("enrichmentAlgorithmProtein", "Enrichment algorithm :",
                               choices = list("SEA"="sea",
@@ -192,10 +194,18 @@ ui <- fluidPage(
                               choices = list("chi-test" = "chi",
                                              "Fisher's exact test" = "fisher",
                                              "Binomial test" = "binom",
-                                             "G-test" = "gtest",
+                                             "G-test" = "g-test",
                                              "Hypergeometric test" = "hypergeo"), 
                               selected = "chi"),
                  
+                 tags$hr(),
+                 radioButtons("AMprotein", "Adjustment method:",
+                              choices = list("Bonferroni" = "bonferroni",
+                                             "Benjamini-Hochberg" = "BH"
+                               ), 
+                              selected = 1),
+                 
+                 tags$hr(),
                  radioButtons("updownProteinDomain", "Regulated genes:",
                               choices = list("Up" = "up",
                                              "Down" = "down",
