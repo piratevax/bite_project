@@ -125,18 +125,34 @@ shinyServer(function(session, input, output) {
         }
       }
       
+      ### Pathway
+      
+      
+      ### Protein domain
+      if (rv$protein) {
+         rv$proteinRes <- ORA(
+           gene.set = rv$read$ID,
+           database = rv$dbprotein,
+           species = rv$organism,
+           test = rv$statisticalMethod,
+           threshold = rv$pvalue,
+           enrichment = rv$updownProteinDomain,
+           correction = rv$AMprotein
+         )
+         output$tableProtein <- DT::renderDataTable({
+           rv$proteinRes[["table"]]
+         })
+         output$plotProtein <- renderPlot({
+           rv$proteinRes[["graph"]]
+         })
+      }
+      
+      ### Epuisement de la queue
       rv$queue <- NULL
       rv$queue.lastSize <- 0
       output$queue <- DT::renderDataTable({
         NULL
       })
-      
-      ### Pathway
-      
-      
-      ### Protein domain
-      
-      
     })
   
   
@@ -312,6 +328,8 @@ shinyServer(function(session, input, output) {
       rv$statisticalMethod <- protein.methodProtein()
       rv$updownProteinDomain <- protein.updownProteinDomain()
       rv$AMprotein <- protein.AMprotein()
+      
+      rv$queue <- c(rv$queue, list("Prot", rv$enrichmentAlgorithmProtein))      
       
       tmp <- length(rv$queue) / 2
       if (tmp != rv$queue.lastSize) {
