@@ -75,10 +75,23 @@ retreiveFoldChange <- function(l2FC) {
   return(2^l2FC)
 }
 
-gseaGO <- function(read, alpha = 0.05, ont = "ALL", adjustMethod = "BH", organism) {
+getGeneListClusterProfiler <- function(read, analysis = "GO", organism) {
+  if (organism == "hsapiens") {
+    orgDB <- org.Hs.eg.db
+  } else if (organism == "mmusculus") {
+    orgDB <- org.Mm.eg.db
+  }
   geneList <- sapply(read$log2FoldChange, retreiveFoldChange)
-  names(geneList) <- read$ID
+  if (analysis == "GO") {
+    names(geneList) <- read$ID
+  } else {
+    names(geneList) <- convertType(read$ID, organism = organism, to = "UNIPROT")
+  }
   geneList <- sort(geneList, decreasing = TRUE)
+  return(geneList)
+}
+
+gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH", organism) {
   if (organism == "hsapiens") {
     orgDB <- org.Hs.eg.db
   } else if (organism == "mmusculus") {
@@ -88,11 +101,36 @@ gseaGO <- function(read, alpha = 0.05, ont = "ALL", adjustMethod = "BH", organis
     OrgDb = orgDB,
     ont = ont, # one of "BP", "MF", "CC" or "ALL"
     nPerm = 1000,
-    minGSSize = 100,
+    minGSSize = 10,
     maxGSSize = 500,
     pAdjustMethod = adjustMethod,
     pvalueCutoff = alpha)
   return(ego)
+}
+
+enrichmentGO <- function(read, alpha = 0.05, ont, adjustMethod = "BH", organism) {
+  if (organism == "hsapiens") {
+    orgDB <- org.Hs.eg.db
+  } else if (organism == "mmusculus") {
+    orgDB <- org.Mm.eg.db
+  }
+  ego <- enrichGO(gene = read$ID,
+               OrgDb = orgDB,
+               ont = ont, # one of "BP", "MF" or "CC"
+               keyType = "ENTREZID",
+               pAdjustMethod = adjustMethod,
+               pvalueCutoff = alpha)
+  return(ego)
+}
+
+convertType <- function(ids, from = "ENTREZID", to, organism) {
+  if (organism == "hsapiens") {
+    orgDB <- org.Hs.eg.db
+  } else if (organism == "mmusculus") {
+    orgDB <- org.Mm.eg.db
+  }
+  conv <- bitr(ids, fromType=from, toType=to, OrgDb=orgDB)
+  return(conv[,2])
 }
 
 GOLink <- function(x) {
@@ -101,6 +139,34 @@ GOLink <- function(x) {
 
 GOList <- function(x) {
   return(list("ID"=as.vector(sapply(x$ID, GOLink)), "Description"=x$Description, "p.adjust"=x$p.adjust))
+}
+
+gseaKegg <- function(geneList, alpha = 0.05, organism) {
+  if (organism == "hsapiens") {
+    org <- "hsa"
+  } else if (organism == "mmusculus") {
+    org <- "mmu"
+  }
+  kk <- gseKEGG(geneList     = geneList,
+                 organism     = org,
+                 nPerm        = 1000,
+                 minGSSize    = 120,
+                 pvalueCutoff = alpha,
+                 keyType = "uniprot",
+                 verbose      = FALSE)
+  return(kk)
+}
+
+enrichmentKegg <- function(read, alpha = 0.05, organism) {
+  if (organism == "hsapiens") {
+    org <- "hsa"
+  } else if (organism == "mmusculus") {
+    org <- "mmu"
+  }
+  kk <- enrichKEGG(gene         = convertType(gene$ID, to = "UNIPROT", organism = organism),
+                   organism     = org,
+                   pvalueCutoff = alpha)
+  return(kk)
 }
 
 DEBUG <- function() {
