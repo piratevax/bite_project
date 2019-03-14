@@ -42,7 +42,7 @@ ui <- fluidPage(
       radioButtons("IDsource", "ID gene source",
                    choices = list("GeneNCBI" = "ncbi",
                                   "Ensembl" = "ensembl"),
-                   selected = 2),
+                   selected = "ensembl"),
       
       # Horizontal line ----
       tags$hr(),
