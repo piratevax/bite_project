@@ -32,7 +32,7 @@ Input file must containt, *in that particular order*
 ## Common parameters
 * ID Gene source
 * Species
-* Enrichment algorith
+* Enrichment algorimth
   * GSEA
   * SEA
 * Statistical test supported for all analyses
