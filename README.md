@@ -60,15 +60,13 @@ Input file must containt, *in that particular order*
   * Benjamini-Hochberg
   
 ## Data inspection
-Cutoffs for log2 Fold-change and p-value can be applied
+Cutoffs for log2 Fold-change and p-value can be applied.
 
 ## GO terms
-All three levels of the Gene Ontology can be investigated using the following databases :
-* GO
+All three levels of the Gene Ontology are investigated using the GO database.
 
 ## Pathways
-Molecular pathways can be investigated using the following databases :
-* GO
+Pathways are enriched using the KEGG database.
 
 ## Protein domains
 Protein domains can be investigated using the following databases :
@@ -80,15 +78,25 @@ Protein domains can be investigated using the following databases :
 
 # Output
 ## Data inspection
-Whole data inspection outputs a volcano plot, a MA plot, and a sortable table of the raw data.
+Whole data inspection outputs : 
+* A volcano plot
+* A MA plot
+* A sortable table of the raw data.
 
 ## GO terms
-GO terms enrichement analysis results ni a \[A voir avec Xavier\]
+GO terms enrichement analysis results in :
+* Table containing the GO ID, its description and the adjusted p-value 
+* A plot aggregating significant metrics such as the p-value or the ratio between condition A and B.
 
 ## Pathways
-
+The output of the pathway enrichment is : 
+* Table containing the pathway ID, its name and the associated metrics.
+* Graph of the pathway containing the over/under-expressed genes.
 
 ## Protein domains
+The output of the protein domain enrichment is : 
+* A table containing the protein domain ID, its name and the associated metrics.
+* A bar plot of most significaltly enriched / empoverished protein domains
 
 [Return to summary](https://github.com/piratevax/bite_project#summary)
 
