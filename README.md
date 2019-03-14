@@ -17,6 +17,7 @@ Bioinformatics Interactive Toolbox for Enrichment analysis, or BITE Analysis, is
 
 [Packages used and dependencies](https://github.com/piratevax/bite_project#packages-used-and-dependencies)
 
+[Troobleshooting and FAQ](https://github.com/piratevax/bite_project/blob/master/README.md#troobleshooting-and-faq)
 
 # Overview
 \[Tuto ultra-rapide : comment qu'on fait des trucs]
@@ -83,4 +84,6 @@ GO terms enrichement analysis results ni a \[A voir avec Xavier\]
 # Packages used and dependencies
 \[Faire le session.info() en dernier, ajouter une courte description si possible]
 
-# Troobleshooting
+# Troobleshooting and FAQ
+## What are the species currently supported ?
+As of right now, only the human genome and the mouse genome are supported
