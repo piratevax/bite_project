@@ -196,7 +196,7 @@ RunTest <-
           lower.tail = low.tail
         )
       }
-    } else if (test == "binomial") {
+     else if (test == "binomial") {
       succes.out.sample <- contingency.table[1, 2]
       out.sample.size <- sum(contingency.table[, 2])
       test.results <-
