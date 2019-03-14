@@ -103,6 +103,7 @@ gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH", org
     nPerm = 10000,
     minGSSize = 10,
     maxGSSize = 500,
+    keyType = 'ENTREZID',
     pAdjustMethod = adjustMethod,
     pvalueCutoff = alpha)
   return(ego)
