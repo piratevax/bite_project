@@ -87,6 +87,43 @@ GO terms enrichement analysis results ni a \[A voir avec Xavier\]
 
 
 # Packages used and dependencies
+
+pathview_1.22.3
+
+PFAM.db_3.7.0
+
+DescTools_0.99.27
+
+dplyr_0.8.0.1
+
+clusterProfiler_3.10.1
+
+org.Mm.eg.db_3.7.0
+
+org.Hs.eg.db_3.7.0
+
+AnnotationDbi_1.44.0
+
+IRanges_2.16.0
+
+S4Vectors_0.20.1      
+
+Biobase_2.42.0
+
+BiocGenerics_0.28.0
+
+biomaRt_2.38.0
+
+ggplot2_3.1.0
+
+stringr_1.3.1         
+
+DT_0.5
+
+shinythemes_1.1.2
+
+shiny_1.2.0         
+
 fgsea_1.8.0
 
 colorspace_1.4-0
