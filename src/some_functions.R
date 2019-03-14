@@ -2,6 +2,7 @@ require(stringr)
 require(ggplot2)
 require(biomaRt)
 require(org.Hs.eg.db)
+library(org.Mm.eg.db)
 require(clusterProfiler)
 
 
@@ -70,21 +71,32 @@ getSignificativeGene <- function(x, alpha = 0.05, l2FC = 0, absolute = TRUE) {
   }
 }
 
-gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH") {
-  geneList <- sort(as.numeric(bitr(geneList, fromType = "SYMBOL", toType = "ENTREZID", OrgDb="org.Hs.eg.db")[,2]), decreasing = TRUE)
+retreiveFoldChange <- function(l2FC) {
+  return(2^l2FC)
+}
+
+gseaGO <- function(read, alpha = 0.05, ont = "ALL", adjustMethod = "BH", organism) {
+  geneList <- sapply(read$log2FoldChange, retreiveFoldChange)
+  names(geneList) <- read$ID
+  geneList <- sort(geneList, decreasing = TRUE)
+  if (organism == "hsapiens") {
+    orgDB <- org.Hs.eg.db
+  } else if (organism == "mmusculus") {
+    orgDB <- org.Mm.eg.db
+  }
   ego <- gseGO(geneList = geneList,
-    OrgDb = org.Hs.eg.db,
+    OrgDb = orgDB,
     ont = ont, # one of "BP", "MF", "CC" or "ALL"
     nPerm = 1000,
     minGSSize = 100,
     maxGSSize = 500,
     pAdjustMethod = adjustMethod,
     pvalueCutoff = alpha)
-  return(ego)#list(ego$ID, ego$Description, ego$p.adjust))sapply(ego3$ID, GOLink)
+  return(ego)
 }
 
 GOLink <- function(x) {
-  return(paste("<a href='http://amigo.geneontology.org/amigo/term/", x, "'>", x, "</a>", sep = ""))
+  return(HTML(paste("<a href='http://amigo.geneontology.org/amigo/term/", x, "'>", x, "</a>", sep = "")))
 }
 
 GOList <- function(x) {
@@ -92,7 +104,7 @@ GOList <- function(x) {
 }
 
 DEBUG <- function() {
-  path <- "DE2.TH_ccRCC_checkpoints_from_all.csv"
+  path <- "NIHMS862425_trans.tsv"#"small.tsv"
   read <- readFile(path, TRUE)
   pvalFilter <- 0.05
   l2FC <- 1
