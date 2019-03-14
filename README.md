@@ -85,5 +85,22 @@ GO terms enrichement analysis results ni a \[A voir avec Xavier\]
 \[Faire le session.info() en dernier, ajouter une courte description si possible]
 
 # Troobleshooting and FAQ
-## What are the species currently supported ?
-As of right now, only the human genome and the mouse genome are supported
+SInce no user have reported any kind of problem with the app, I'll go straight to the FAQ.
+
+### How are you ?
+Fine, thanks.
+
+### What are the species currently supported ?
+As of right now, only the human genome and the mouse genome are supported, and it will not be expanded whatsoever.
+
+### Star Wars movies in order of preference ?
+II, I, VII IV, VI, VII, III, V.
+
+### How do you think you handled that project ?
+F\**k that s\**t.
+
+### Third favorite dinosaur ?
+Triceratops.
+
+### 5 341 325 x 15 132 ?
+80 824 929 900.
