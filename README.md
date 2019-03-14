@@ -27,6 +27,7 @@ Bioinformatics Interactive Toolbox for Enrichment analysis, or BITE Analysis, is
 * Add the analysis to the queue using the 'Submit' button
 * Release the queue using the 'GO' button on the sidebar
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Input files
 ## Format
@@ -39,6 +40,8 @@ Input file must containt, *in that particular order*
 * Log2 of the Fold Change (log2 of ratio between condition A and B)
 * Adjusted p-value
 
+
+[Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Parameters
 ## Common parameters
@@ -72,6 +75,8 @@ Protein domains can be investigated using the following databases :
 * PFam
 * InterPro
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
+
 
 # Output
 ## Data inspection
@@ -85,8 +90,49 @@ GO terms enrichement analysis results ni a \[A voir avec Xavier\]
 
 ## Protein domains
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Packages used and dependencies
+
+### Main packages
+pathview_1.22.3
+
+PFAM.db_3.7.0
+
+DescTools_0.99.27
+
+dplyr_0.8.0.1
+
+clusterProfiler_3.10.1
+
+org.Mm.eg.db_3.7.0
+
+org.Hs.eg.db_3.7.0
+
+AnnotationDbi_1.44.0
+
+IRanges_2.16.0
+
+S4Vectors_0.20.1      
+
+Biobase_2.42.0
+
+BiocGenerics_0.28.0
+
+biomaRt_2.38.0
+
+ggplot2_3.1.0
+
+stringr_1.3.1         
+
+DT_0.5
+
+shinythemes_1.1.2
+
+shiny_1.2.0
+
+### Main packages dependencies
+
 fgsea_1.8.0
 
 colorspace_1.4-0
@@ -283,9 +329,9 @@ munsell_0.5.0
 
 viridisLite_0.3.0
 
-
 ggplotify_0.0.3
 
+[Return to summary](https://github.com/piratevax/bite_project#summary)
 
 # Troobleshooting and FAQ
 SInce no user have reported any kind of problem with the app, I'll go straight to the FAQ.
@@ -319,3 +365,6 @@ You are. <3
 
 ### Next project ?
 Don't know yet but f\**k that s\**t too.
+
+### You're not that fun, can I go back up there ?
+[There you go](https://github.com/piratevax/bite_project#summary)
