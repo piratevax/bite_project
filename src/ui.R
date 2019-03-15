@@ -43,7 +43,7 @@ ui <- fluidPage(
                    choices = list("GeneNCBI" = "ncbi",
                                   "Ensembl" = "ensembl"),
                    
-                   selected = "ensembl"),
+                   selected = "ncbi"),
       
       # Horizontal line ----
       tags$hr(),
@@ -145,6 +145,12 @@ ui <- fluidPage(
                  #                             "Hypergeometric test" = "hypergeo"), 
                  #              selected = "chi"),
                  tags$hr(),
+                 radioButtons("AMGO", "Adjustment method:",
+                              choices = list("Bonferroni" = "bonferroni",
+                                             "Benjamini-Hochberg" = "BH"
+                              ), 
+                              selected = "BH"),
+                 tags$hr(),
                  actionButton("submitGOE", "Submit"),
                  
                  tags$hr(),
@@ -212,8 +218,8 @@ ui <- fluidPage(
                  
                  tags$hr(),
                  radioButtons("updownProteinDomain", "Regulated genes:",
-                              choices = list("Up" = "up",
-                                             "Down" = "down",
+                              choices = list("Up" = "over",
+                                             "Down" = "under",
                                              "Both" = "both")),
                  actionButton("submitProtein", "Submit"),
                  

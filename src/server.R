@@ -13,6 +13,7 @@ require(org.Hs.eg.db)
 require(clusterProfiler)
 require(pathview)
 source("some_functions.R")
+source("ora.R")
 
 shinyServer(function(session, input, output) {
   DEBUG.var = TRUE
@@ -49,10 +50,15 @@ shinyServer(function(session, input, output) {
       cat(paste("#D# -> ID source: ", input$IDsource, "\n", sep =""))
     input$IDsource
   })
+  pvalue <- reactive({
+    input$pvalue
+  })
   
   observeEvent(
     input$goButton, {
       rv$read <- file()
+      rv$idSource <- idSource()
+      rv$pvalue <- pvalue()
       if (DEBUG.var)
         cat(paste("#D# -> ", rv$read, "\n", sep = ""))
       rv$organismSelected <- organismSelected()
@@ -92,41 +98,56 @@ shinyServer(function(session, input, output) {
       if (DEBUG.var)
         cat(paste("#D# rv$goe: ", rv$goe, "\n", sep = ""))
       if (rv$goe) {
+        keyType = ""
+        if (rv$idSource == "ncbi")
+          keyType = "ENTREZID"
+        else keyType = "ENSEMBL"
         if (DEBUG.var)
-          cat(paste("#D# pval: ", typeof(rv$pvalue), "\n", sep = ""))
+          cat(paste("#D# pval: ", rv$pvalue, "\n", sep = ""))
+        if (DEBUG.var)
+          cat(paste("#D# go.AM: ", rv$AMGO, "\n", sep = ""))
         if (DEBUG.var)
           cat(paste("#D# GOE ontology:\n\tall", rv$allGO, "\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, "\n", sep = ""))
+        if (DEBUG.var)
+          cat(paste("#D# GOE EA: ", rv$checkboxGOE, "\n", sep = ""))
         if (rv$checkboxGOE == "gsea") {
           if (rv$allGO) {
             rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
-                                rv$pvalue, adjustMethod = rv$AMGO, organism =  rv$organism)
+                                rv$pvalue, adjustMethod = rv$AMGO, organism = rv$organism,
+                                keyType = keyType)
           } else {
             if (rv$MF) {
               rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
-                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "MF", organism = rv$organism)
+                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "MF", organism = rv$organism,
+                                  keyType = keyType)
             } else if (rv$CC) {
               rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
-                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "CC", organism =rv$organism)
+                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "CC", organism =rv$organism,
+                                  keyType = keyType)
             } else if (rv$BP) {
               rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
-                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "BP", organism = rv$organism)
+                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "BP", organism = rv$organism,
+                                  keyType = keyType)
             }
           }
         } else {
           if (rv$MF) {
             rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue,
-                                      ont = "MF", adjustMethod = rv$AMGO, organism = rv$organism)
+                                      ont = "MF", adjustMethod = rv$AMGO, organism = rv$organism,
+                                      keyType = keyType)
           } else if (rv$CC) {
             rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue,
-                                      ont = "CC", adjustMethod = rv$AMGO, organism =rv$organism)
+                                      ont = "CC", adjustMethod = rv$AMGO, organism =rv$organism,
+                                      keyType = keyType)
           } else if (rv$BP) {
             rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue,
-                                      ont = "BP", adjustMethod = rv$AMGO, organism = rv$organism)
+                                      ont = "BP", adjustMethod = rv$AMGO, organism = rv$organism,
+                                      keyType = keyType)
           }
         }
-        if (dim(rv$gesaGO )[1] > 0){
+        if (dim(rv$gseaGO)[1] > 0){
           output$tableGOE <- DT::renderDataTable({
-            GOList(rv$gseaGO)
+            as.data.frame(GOList(rv$gseaGO))
           })
           rv$plotGOE <- dotplot(rv$gseaGO)
           output$plotGO <- renderPlot({
@@ -183,9 +204,9 @@ shinyServer(function(session, input, output) {
   wdi.log2FoldChange <- reactive({
     input$lFC
   })
-  wdi.pvalue <- reactive({
-    input$pvalue
-  })
+  # wdi.pvalue <- reactive({
+  #   input$pvalue
+  # })
   
   observe({
     rv$absolute <- absoluteValue()
@@ -200,7 +221,7 @@ shinyServer(function(session, input, output) {
       rv$volcanoPlot <- FALSE
       rv$MAPlot <- FALSE
       rv$wdi <- TRUE
-      rv$pvalue <- wdi.pvalue()
+      # rv$pvalue <- wdi.pvalue()
       rv$l2FC <- wdi.log2FoldChange()
       tmp <- wdi.radiobutton()
       for (i in tmp) {
