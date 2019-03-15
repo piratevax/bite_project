@@ -163,21 +163,26 @@ shinyServer(function(session, input, output) {
       
       ### Protein domain
       if (rv$protein) {
-         rv$proteinRes <- ORA(
-           gene.set = rv$read$ID,
-           database = rv$dbprotein,
-           species = rv$organism,
-           test = rv$statisticalMethod,
-           threshold = rv$pvalue,
-           enrichment = rv$updownProteinDomain,
-           correction = rv$AMprotein
-         )
-         output$tableProtein <- DT::renderDataTable({
-           rv$proteinRes[["table"]]
-         })
-         output$plotProtein <- renderPlot({
-           rv$proteinRes[["graph"]]
-         })
+        if (DEBUG.var)
+          cat(paste("#D# prot: ", rv$protein, "\n", sep = ""))
+        rv$proteinRes <- ORA(
+          gene.set = rv$read$ID,
+          id.source = rv$idSource,
+          database = rv$dbprotein,
+          species = rv$organism,
+          test = rv$statisticalMethod,
+          threshold = rv$pvalue,
+          enrichment = rv$updownProteinDomain,
+          correction = rv$AMprotein
+        )
+        if (DEBUG.var)
+          cat(paste("#D# prot.res: ", rv$proteinRES, "\n", sep = ""))
+        output$tableProtein <- DT::renderDataTable({
+          rv$proteinRes[["table"]]
+        })
+        output$plotProtein <- renderPlot({
+          rv$proteinRes[["graph"]]
+        })
       }
       
       ### Epuisement de la queue
@@ -363,9 +368,9 @@ shinyServer(function(session, input, output) {
   protein.dbprotein <- reactive({
     input$dbprotein
   })
-  protein.enrichmentAlgorithmProtein <- reactive({
-    input$enrichmentAlgorithmProtein
-  })
+  # protein.enrichmentAlgorithmProtein <- reactive({
+  #   input$enrichmentAlgorithmProtein
+  # })
   protein.statisticalMethod <- reactive({
     input$methodProtein
   })
@@ -380,12 +385,12 @@ shinyServer(function(session, input, output) {
     input$submitProtein, {
       rv$protein <- TRUE
       rv$dbprotein <- protein.dbprotein()
-      rv$enrichmentAlgorithmProtein <- protein.enrichmentAlgorithmProtein()
-      rv$statisticalMethod <- protein.methodProtein()
+      # rv$enrichmentAlgorithmProtein <- protein.enrichmentAlgorithmProtein()
+      rv$statisticalMethod <- protein.statisticalMethod()
       rv$updownProteinDomain <- protein.updownProteinDomain()
       rv$AMprotein <- protein.AMprotein()
       
-      rv$queue <- c(rv$queue, list("Prot", rv$enrichmentAlgorithmProtein))      
+      rv$queue <- c(rv$queue, list("Prot", rv$statisticalMethod))      
       
       tmp <- length(rv$queue) / 2
       if (tmp != rv$queue.lastSize) {
