@@ -174,8 +174,9 @@ shinyServer(function(session, input, output) {
         output$tablePathway <- DT::renderDataTable({
           rv$pathwayRes[["table"]]
         })
-        output$plotPathway <- renderPlot({
-          rv$pathwayRes[["visualization.filename"]]
+        pathRes <- unlist(rv$pathwayRes[["visualization.filename"]])[1]
+        output$plotPathway <- renderImage({
+          list(src=unlist(strsplit(pathRes, "/"))[4])
         })
       }
       
