@@ -194,11 +194,11 @@ ui <- fluidPage(
                              choices=list("PFAM"="pfam",
                                           "Interpro"="interpro"
                              )),
-                 tags$hr(),
-                 radioButtons("enrichmentAlgorithmProtein", "Enrichment algorithm :",
-                              choices = list("SEA"="sea",
-                                             "GSEA" = "gsea"),
-                              selected = "sea"),
+                 # tags$hr(),
+                 # radioButtons("enrichmentAlgorithmProtein", "Enrichment algorithm :",
+                 #              choices = list("SEA"="sea",
+                 #                             "GSEA" = "gsea"),
+                 #              selected = "sea"),
                  tags$hr(),
                  
                  radioButtons("methodProtein", "Statistical methods :",
@@ -207,20 +207,21 @@ ui <- fluidPage(
                                              "Binomial test" = "binomial",
                                              "G-test" = "g-test",
                                              "Hypergeometric test" = "hypergeometric"), 
-                              selected = "chi"),
+                              selected = "g-test"),
                  
                  tags$hr(),
                  radioButtons("AMprotein", "Adjustment method:",
                               choices = list("Bonferroni" = "bonferroni",
                                              "Benjamini-Hochberg" = "BH"
                                ), 
-                              selected = 1),
+                              selected = "bonferroni"),
                  
                  tags$hr(),
-                 radioButtons("updownProteinDomain", "Regulated genes:",
+                 radioButtons("updownProteinDomain", "Enrichment direction:",
                               choices = list("Up" = "over",
                                              "Down" = "under",
-                                             "Both" = "both")),
+                                             "Both" = "both"),
+                              selected = "over"),
                  actionButton("submitProtein", "Submit"),
                  
                  tags$hr(),
