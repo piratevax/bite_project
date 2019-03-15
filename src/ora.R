@@ -66,7 +66,7 @@ GetBackgroundGenes <-
   }
 
 GenerateContingencyTables <-
-  function (domain, gene.set, background) {
+  function (domain, gene.set, background, database) {
     # Compute a contingency table for a given domain
     #
     # Args:
@@ -97,7 +97,7 @@ GenerateContingencyTables <-
 RunTest <-
   function (contingency.table,
             test = "g-test",
-            enrichment = "over") {
+            enrichment = "over", threshold) {
     success.in.sample <- contingency.table[1, 1]
     sample.size <- sum(contingency.table[, 1])
     success.in.population <- sum(contingency.table[1,])
@@ -221,7 +221,7 @@ ORA <- function (gene.set,
     species.dataset <- paste0(species, "_gene_ensembl")
     ensembl <-
       useMart(biomart = "ensembl", dataset = species.dataset)
-    id.conversion <- getBM(
+    gene.set <- getBM(
       attributes = "ensembl_gene_id",
       filters = "entrezgene",
       values = gene.set,
@@ -230,20 +230,22 @@ ORA <- function (gene.set,
   }
   background <- GetBackgroundGenes(database, species)
   annotated.gene.set <-
-    filter(background, ensembl_gene_id %in% gene.set)
+    filter(background, ensembl_gene_id %in% gene.set[, 1])
   filtered.background <-
-    filter(background,!ensembl_gene_id %in% gene.set)
+    filter(background,!ensembl_gene_id %in% gene.set[, 1])
   domains <- unique(annotated.gene.set[database][, 1])
   contingency.tables <-
     lapply(domains,
            GenerateContingencyTables,
            gene.set = annotated.gene.set,
-           background = filtered.background)
+           background = filtered.background,
+           database = database)
   over.or.underrepresented <-
     lapply(contingency.tables,
            RunTest,
            test = test,
-           enrichment = enrichment)
+           enrichment = enrichment,
+           threshold = threshold)
   col.names <-
     c("ID",
       "gene count (set)",
@@ -274,8 +276,7 @@ ORA <- function (gene.set,
     ggplot(ordered.list[1:10,], aes(
       x = reorder(ordered.list[1:10, 2], -log10(ordered.list[1:10, 7])),
       y = -log10(ordered.list[1:10, 7])
-    )) +
-    ggtitle("Top 10 over/underrepresented protein domains") +
+    )) + plot.title +
     ylab("- log10 (adjusted p-value)") + xlab("") +
     geom_bar(stat = 'identity') +
     coord_flip()
