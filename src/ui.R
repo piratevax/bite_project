@@ -171,7 +171,7 @@ ui <- fluidPage(
                               choices = list("SEA" = "sea",
                                              "GSEA" = "gsea"
                               ), 
-                              selected = "sea"),
+                              selected = "gsea"),
                  tags$hr(),
                  radioButtons("AMPathway", "Adjustment method:",
                               choices = list("Bonferroni" = "bonferroni",
