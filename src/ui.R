@@ -155,18 +155,18 @@ ui <- fluidPage(
         
         
         tabPanel("Pathway",
-                 selectInput("dbPathway", "Database :", 
-                             choices=list("GO"="GO",
-                                          "autre"="autre banque ?"
-                             )),
-                 tags$hr(),
+                 # selectInput("dbPathway", "Database :", 
+                 #             choices=list("GO"="GO",
+                 #                          "autre"="autre banque ?"
+                 #             )),
+                 # tags$hr(),
                  radioButtons("enrichmentAlgorithmPathway", "Enrichment algorithm :",
                               choices = list("SEA" = "sea",
                                              "GSEA" = "gsea"
                               ), 
                               selected = "sea"),
                  tags$hr(),
-                 radioButtons("AMGO", "Adjustment method:",
+                 radioButtons("AMPathway", "Adjustment method:",
                               choices = list("Bonferroni" = "bonferroni",
                                              "Benjamini-Hochberg" = "BH"
                               ), 
