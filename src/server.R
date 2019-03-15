@@ -14,6 +14,7 @@ require(clusterProfiler)
 require(pathview)
 source("some_functions.R")
 source("ora.R")
+source("kegg.R")
 
 shinyServer(function(session, input, output) {
   DEBUG.var = TRUE
@@ -158,19 +159,38 @@ shinyServer(function(session, input, output) {
       
       ### Pathway
       if (rv$pathway) {
-        
+        if (DEBUG.var)
+          cat(paste("#D# prot: ", rv$pathway, "\n", sep = ""))
+        rv$pathwayRes <- KEGG(
+          gene.set = rv$read$ID,
+          id.source = rv$idSource,
+          species = rv$organism,
+          method = rv$EAPathway,
+          threshold = rv$pvalue,
+          correction = rv$AMPathway
+        )
+        if (DEBUG.var)
+          cat(paste("#D# prot.res: ", rv$pathwayRes, "\n", sep = ""))
+        output$tablePathway <- DT::renderDataTable({
+          rv$pathwayRes[["table"]]
+        })
+        output$plotPathway <- renderPlot({
+          rv$pathwayRes[["visualization.filename"]]
+        })
       }
       
       ### Protein domain
       if (rv$protein) {
         if (DEBUG.var)
           cat(paste("#D# prot: ", rv$protein, "\n", sep = ""))
+        if (DEBUG.var)
+          cat(paste("#D# prot:\n\tsrc: ",rv$idSource, "\ttest: ", rv$statisticalMethodProtein, sep = ""))
         rv$proteinRes <- ORA(
           gene.set = rv$read$ID,
           id.source = rv$idSource,
           database = rv$dbprotein,
           species = rv$organism,
-          test = rv$statisticalMethod,
+          test = rv$statisticalMethodProtein,
           threshold = rv$pvalue,
           enrichment = rv$updownProteinDomain,
           correction = rv$AMprotein
@@ -345,13 +365,17 @@ shinyServer(function(session, input, output) {
   pathway.enrichmentAnalysis <- reactive({
     input$enrichmentAlgorithmPathway
   })
-  pathway.statisticalMethod <- reactive({
-    input$methodPathway
+  pathway.AMPtahway <- reactive({
+    input$AMPathway
   })
   
   observeEvent(
-    input$submitProtein, {
+    input$submitPathway, {
       rv$pathway = TRUE
+      rv$AMPathway <- pathway.AMPtahway()
+      rv$EAPathway <- pathway.enrichmentAnalysis()
+      
+      rv$queue <- c(rv$queue, list("Pathway", rv$EAPathway))   
       
       tmp <- length(rv$queue) / 2
       if (tmp != rv$queue.lastSize) {
@@ -386,11 +410,11 @@ shinyServer(function(session, input, output) {
       rv$protein <- TRUE
       rv$dbprotein <- protein.dbprotein()
       # rv$enrichmentAlgorithmProtein <- protein.enrichmentAlgorithmProtein()
-      rv$statisticalMethod <- protein.statisticalMethod()
+      rv$statisticalMethodProtein <- protein.statisticalMethod()
       rv$updownProteinDomain <- protein.updownProteinDomain()
       rv$AMprotein <- protein.AMprotein()
       
-      rv$queue <- c(rv$queue, list("Prot", rv$statisticalMethod))      
+      rv$queue <- c(rv$queue, list("Prot", rv$statisticalMethodProtein))      
       
       tmp <- length(rv$queue) / 2
       if (tmp != rv$queue.lastSize) {
