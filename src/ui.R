@@ -178,7 +178,7 @@ ui <- fluidPage(
                  tabPanel("Table Pathway", DT::dataTableOutput("tablePathway")),
                  
                  tags$hr(),
-                 plotOutput("plotGO")
+                 plotOutput("plotPathway")
         ),
         
         

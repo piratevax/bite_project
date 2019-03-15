@@ -98,23 +98,30 @@ shinyServer(function(session, input, output) {
           cat(paste("#D# GOE ontology:\n\tall", rv$allGO, "\n\tMF: ", rv$MF, "\n\tCC: ", rv$CC, "\n\tBP: ", rv$BP, "\n", sep = ""))
         if (rv$checkboxGOE == "gsea") {
           if (rv$allGO) {
-            rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism), rv$pvalue, adjustMethod = rv$AMGO, organism =  rv$organism)
+            rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
+                                rv$pvalue, adjustMethod = rv$AMGO, organism =  rv$organism)
           } else {
             if (rv$MF) {
-              rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism), rv$pvalue, adjustMethod = rv$AMGO, ont = "MF", organism = rv$organism)
+              rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
+                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "MF", organism = rv$organism)
             } else if (rv$CC) {
-              rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism), rv$pvalue, adjustMethod = rv$AMGO, ont = "CC", organism =rv$organism)
+              rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
+                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "CC", organism =rv$organism)
             } else if (rv$BP) {
-              rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism), rv$pvalue, adjustMethod = rv$AMGO, ont = "BP", organism = rv$organism)
+              rv$gseaGO <- gseaGO(getGeneListClusterProfiler(rv$read, organism = rv$organism),
+                                  rv$pvalue, adjustMethod = rv$AMGO, ont = "BP", organism = rv$organism)
             }
           }
         } else {
           if (rv$MF) {
-            rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue, ont = "MF", adjustMethod = rv$AMGO, organism = rv$organism)
+            rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue,
+                                      ont = "MF", adjustMethod = rv$AMGO, organism = rv$organism)
           } else if (rv$CC) {
-            rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue, ont = "CC", adjustMethod = rv$AMGO, organism =rv$organism)
+            rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue,
+                                      ont = "CC", adjustMethod = rv$AMGO, organism =rv$organism)
           } else if (rv$BP) {
-            rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue, ont = "BP", adjustMethod = rv$AMGO, organism = rv$organism)
+            rv$gseaGO <- enrichmentGO(read = rv$read, alpha = rv$pvalue,
+                                      ont = "BP", adjustMethod = rv$AMGO, organism = rv$organism)
           }
         }
         if (dim(rv$gesaGO )[1] > 0){
