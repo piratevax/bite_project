@@ -91,7 +91,7 @@ getGeneListClusterProfiler <- function(read, analysis = "GO", organism) {
   return(geneList)
 }
 
-gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH", organism) {
+gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH", organism, keyType = 'ENSEMBL') {
   if (organism == "hsapiens") {
     orgDB <- org.Hs.eg.db
   } else if (organism == "mmusculus") {
@@ -103,13 +103,13 @@ gseaGO <- function(geneList, alpha = 0.05, ont = "ALL", adjustMethod = "BH", org
     nPerm = 10000,
     minGSSize = 10,
     maxGSSize = 500,
-    keyType = 'ENTREZID',
+    keyType = keyType,
     pAdjustMethod = adjustMethod,
     pvalueCutoff = alpha)
   return(ego)
 }
 
-enrichmentGO <- function(read, alpha = 0.05, ont, adjustMethod = "BH", organism) {
+enrichmentGO <- function(read, alpha = 0.05, ont, adjustMethod = "BH", organism, keyType = 'ENSEMBL') {
   if (organism == "hsapiens") {
     orgDB <- org.Hs.eg.db
   } else if (organism == "mmusculus") {
@@ -118,7 +118,7 @@ enrichmentGO <- function(read, alpha = 0.05, ont, adjustMethod = "BH", organism)
   ego <- enrichGO(gene = read$ID,
                OrgDb = orgDB,
                ont = ont, # one of "BP", "MF" or "CC"
-               keyType = "ENTREZID",
+               keyType = keyType,
                pAdjustMethod = adjustMethod,
                pvalueCutoff = alpha)
   return(ego)
