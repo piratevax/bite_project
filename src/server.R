@@ -162,7 +162,7 @@ shinyServer(function(session, input, output) {
         if (DEBUG.var)
           cat(paste("#D# prot: ", rv$pathway, "\n", sep = ""))
         rv$pathwayRes <- KEGG(
-          gene.set = rv$read$ID,
+          gene.set = cbind(rv$read$ID, rv$read$log2FoldChange),
           id.source = rv$idSource,
           species = rv$organism,
           method = rv$EAPathway,
