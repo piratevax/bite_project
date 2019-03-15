@@ -2,15 +2,8 @@ require(clusterProfiler)
 require(pathview)
 require(dplyr)
 require(plyr)
-if (species == "hsapiens") {
-  require(org.Hs.eg.db)
-}
-if (species == "mmusculus") {
-  require(org.Mm.eg.db)
-}
 
-gene.set <- read.delim("~/Bureau/NIHMS862425_trans.tsv", header = T)
-gene.set <- gene.set[, c(1, 5)]
+
 
 KEGG <- function (gene.set,
                   id.source = "ensembl",
@@ -35,7 +28,7 @@ KEGG <- function (gene.set,
       values = gene.set[, 1],
       mart = ensembl
     )
-    gene.set <- filter(gene.set, ID %in% id.conversion[, 2])
+    gene.set <- filter(gene.set, gene.set[] %in% id.conversion[, 2])
     gene.set[, 1] <-
       mapvalues(gene.set[, 1],
                 from = id.conversion[, 2],
@@ -67,13 +60,13 @@ KEGG <- function (gene.set,
       use_internal_data = F
     )
   }
-  complete.list <- as.data.frame(kegg.result@result)
+  complete.list <- as.data.frame(kegg.output@result)
   complete.list <- complete.list[, 1:7]
   
   random.string <- gsub(".*file", "", tempfile())
   temp.folder <- tempdir()
   outfile <-
-    paste0(temp.folder, "/", pathID, ".", random.string, ".png")
+    paste0(temp.folder, "/", kegg.output@result$ID[1], ".", random.string, ".png")
   pathview.graph <- pathview(
     gene.data  = gene.list,
     pathway.id = kegg.output@result$ID[1],
