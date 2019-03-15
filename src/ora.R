@@ -162,12 +162,12 @@ metrics <-
 return(metrics)
 }
 
-CorrectAndSelect <- function (metrics, correction) {
+CorrectAndSelect <- function (metrics, correction, threshold) {
   metrics[, 6] <- p.adjust(metrics$`p-value`, method = correction)
   colnames(metrics)[6] <- "adjusted p-value"
   keep <- which(metrics$`adjusted p-value` < threshold)
   selected.terms <- metrics[keep,]
-  rownames(selected.terms) <- 1:nrow(selected.terms)
+  # rownames(selected.terms) <- 1:nrow(selected.terms)
   
   return(selected.terms)
 }
@@ -256,11 +256,11 @@ ORA <- function (gene.set,
   metrics <- as.data.frame(tmp2, col.names = col.names)
   colnames(metrics) <- col.names
   enriched <-
-    CorrectAndSelect(metrics, correction)
+    CorrectAndSelect(metrics, correction, threshold)
   complete.output <- FromIDtoName(enriched, database, species)
   ordered.list <-
     complete.output[order(complete.output[7], decreasing = T), ]
-  rownames(ordered.list) <- 1:nrow(ordered.list)
+  # rownames(ordered.list) <- 1:nrow(ordered.list)
   
   if (enrichment == "both") {
     plot.title = ggtitle("Top 10 over/underrepresented protein domains")
