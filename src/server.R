@@ -136,7 +136,9 @@ shinyServer(function(session, input, output) {
       }
       
       ### Pathway
-      
+      if (rv$pathway) {
+        
+      }
       
       ### Protein domain
       if (rv$protein) {
@@ -245,6 +247,25 @@ shinyServer(function(session, input, output) {
   })
   goe.adjustMethod <- reactive({
     input$AMGO
+  })
+  
+  observe({
+    rv$statisticalMethod <- goe.enrichmentAnalysis()
+    cat(paste("#D# obs: ", rv$statisticalMethod, "\n", sep = ""))
+    if (rv$statisticalMethod == "gsea")
+      updateRadioButtons(session, "checkboxGOE",
+                         choices = list("All"="all",
+                                        "Molecular function"="MF",
+                                        "Cellular component"="CC",
+                                        "Biological process"="BP"),
+                         selected = "all")
+    else
+      updateRadioButtons(session, "checkboxGOE",
+                         choices = list(#"All"="all",
+                                        "Molecular function"="MF",
+                                        "Cellular component"="CC",
+                                        "Biological process"="BP"),
+                         selected = "MF")
   })
   
   observeEvent(
