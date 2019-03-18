@@ -342,38 +342,4 @@ ggplotify_0.0.3
 
 [Return to summary](https://github.com/piratevax/bite_project#summary)
 
-# Troobleshooting and FAQ
-Since no user have reported any kind of problem with the app, I'll go straight to the FAQ.
 
-### How are you ?
-Fine, thanks.
-
-### What are the species currently supported ?
-As of right now, only the human genome and the mouse genome are supported, and it will not be expanded whatsoever.
-
-### Star Wars movies in order of preference ?
-II, I, VII IV, VI, VII, III, V.
-
-### How do you think you handled that project ?
-F\**k that s\**t.
-
-### Language !
-That's not a question.
-
-### My rabbit is getting agressive towards knights, what do I do ?
-Do you have a Saint Grenade of Antioch ? Otherwise run.
-
-### Third favorite dinosaur ?
-Triceratops.
-
-### 5 341 325 x 15 132 ?
-80 824 929 900.
-
-### Who's the best in the team ?
-You are. <3
-
-### Next project ?
-Don't know yet but f\**k that s\**t too.
-
-### You're not that fun, can I go back up there ?
-[There you go](https://github.com/piratevax/bite_project#summary)
